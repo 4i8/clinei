@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "clinei": "^0.0.1-b"
+    "clinei": "^0.0.1-b1"
   }
 }
