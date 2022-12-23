@@ -246,7 +246,7 @@ module.exports.Build = class {
                           ? `Options: ${AllCommands.find(
                               (x) => x.cmd === "help"
                             )
-                              .options.map((x) => "-" + x.name)
+                              .options.map((x) => "--" + x.name)
                               .join(", ")}`
                           : ""
                       }
@@ -419,7 +419,7 @@ module.exports.Build = class {
                       AllCommands.find((x) => x.cmd === "help").options
                         ?.length > 0
                         ? `Options: ${AllCommands.find((x) => x.cmd === "help")
-                            .options.map((x) => "-" + x.name)
+                            .options.map((x) => "--" + x.name)
                             .join(", ")}`
                         : ""
                     }

@@ -67,7 +67,7 @@ module.exports = Register(
                   cmd?.options
                     ?.map((option) => {
                       return (
-                        `    ${Prefix} -${option.name}${
+                        `    ${Prefix} --${option.name}${
                           option?.description
                             ? " ".repeat(8) + option?.description
                             : ""
@@ -144,7 +144,7 @@ module.exports = Register(
                   cmd?.options
                     ?.map((option) => {
                       return (
-                        `    ${Prefix} -${option.name}${
+                        `    ${Prefix} --${option.name}${
                           option?.description
                             ? " ".repeat(8) + option?.description
                             : ""
