@@ -22,14 +22,14 @@
 
     - [get().options](#get-to-get-all-values-for-options)
 
-      - [get all data](#get-to-get-all-values-for-options)
+      - [get all values](#get-to-get-all-values-for-options)
       - [Example options cli](#example-options-cli)
 
       - [get() specific value use key](#get-specific-value-use-key-like-this-options)
 
     - [get().aliases](#get-to-get-all-values-for-aliases)
 
-      - [get all data](#get-to-get-all-values-for-aliases)
+      - [get all values](#get-to-get-all-values-for-aliases)
 
       - [Example aliases cli](#example-aliases-cli)
 
@@ -297,22 +297,22 @@ console.log(get().this); // this command
 # **IF Used**
 
 > #### **if used bind, SupportsOnly `Aliases`**
+<br>
+
+> ### **`bind is true`**
 
 ```js
 bind: true,//(default:false)
 ```
 
-### **`bind is true`**
 
 ```sh-session
 fake-cli testcmd -tcmd
 ```
-
+> ### **`bind is false`**
 ```js
 bind: false,//(default:false)
 ```
-
-### **`bind is false`**
 
 ```sh-session
 fake-cli -tcmd
