@@ -1,0 +1,42 @@
+{
+  "name": "clinei",
+  "author": "Arth",
+  "version": "0.0.1",
+  "description": "clinei is a command line interface handler to make it easy to build cli programs",
+  "main": "index.js",
+  "types": "./types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "command",
+    "line",
+    "interface",
+    "handler",
+    "command-line",
+    "command-line-interface",
+    "args",
+    "arguments",
+    "arg",
+    "argument",
+    "command-line-arguments",
+    "command-line-argument",
+    "command-line-args",
+    "command-line-arg",
+    "cli-args",
+    "cli-arg",
+    "program",
+    "program-commands",
+    "cli-program"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4i8/clinei.git"
+  },
+  "bugs": {
+    "url": "https://github.com/4i8/clinei/issues"
+  },
+  "homepage": "https://github.com/4i8/clinei#readme",
+  "license": "Apache-2.0"
+}
