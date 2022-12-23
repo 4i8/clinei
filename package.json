@@ -8,6 +8,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=12"
+  },
   "keywords": [
     "cli",
     "command",
@@ -38,5 +41,8 @@
     "url": "https://github.com/4i8/clinei/issues"
   },
   "homepage": "https://github.com/4i8/clinei#readme",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "glob": "^8.0.3"
+  }
 }

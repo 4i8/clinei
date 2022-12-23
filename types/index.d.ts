@@ -1,7 +1,7 @@
 declare module "clinei" {
   interface Config {
     /**
-     *  @description This is the prefix of command (required)
+     *  @description prefix your cli program (required)
      * @description path is the path of commands structure (required)
      * @example
      * test login

@@ -11,7 +11,7 @@
 **clinei is a command line interface handler to facilitate the building of cli cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean application**
 [Installation](#installation)
 
- [Map](#map)
+[Map](#map)
 
 [Usage](#Usage)
 
@@ -40,25 +40,7 @@ import { Build, Register } from "clinei";
 
 # **Map**
 
-> ## **RegisterConfig**
-
-```js
-const { Register } = require("clinei");
-Register(
-  {
-    cmd: "",
-    description: "",
-    aliases: [],
-    usage: "",
-    options: [],
-  },
-  (get) => {
-    //...
-  }
-);
-```
-
-> ### **RegisterConfigDeep**
+## **RegisterConfigDeep**
 
 ### **Types**
 
@@ -99,7 +81,7 @@ msg: string;
 required: boolean;
 ```
 
-### **ExplanationRegister**
+> ### **RegisterConfig**
 
 ```js
 const { Register } = require("clinei");
@@ -107,24 +89,42 @@ Register(
   {
     cmd: "",
     description: "",
+    aliases: [],
+    usage: "",
+    options: [],
+  },
+  (get) => {
+    //...
+  }
+);
+```
+
+### **ExplanationRegister**
+
+```js
+const { Register } = require("clinei");
+Register(
+  {
+    cmd: "", // required
+    description: "",
     aliases: [
       //if you want to use aliases you must use this
       {
         name: "",
         description: "",
-        type: <YourType>, //this type: Boolean (Boolean,Number,String)
+        type: YourType, //like this type: Boolean (Boolean,Number,String)
         msg: "",
         required: false,
         bind: false,
       },
     ],
-    usage: "",
+    usage: "", // required
     options: [
       //if you want to use options you must use this
       {
         name: "",
         description: "",
-        type: <YourType>, //this type: Boolean (Boolean,Number,String)
+        type: YourType, //like this type: Boolean (Boolean,Number,String)
         msg: "",
         required: false,
       },
@@ -140,10 +140,10 @@ Register(
 
 > #### **get() to get all values for options and aliases**
 
-### **options cli**
+### **Example options cli**
 
 ```sh-session
-fake testcmd hi --username Arth --age 18
+fake-cli testcmd hi --username Arth --age 18 --sleep
 ```
 
 ```js
@@ -158,6 +158,10 @@ console.log(get().options);
     option: "age",
     value: 18
   }
+  {
+    option: "sleep",
+    value: undefined
+  }
 ]
 */
 ```
@@ -166,12 +170,14 @@ console.log(get().options);
 
 ```js
 console.log(get("username").options); //Arth
+//if yot required option and user not set it, then it will return "empty_clinei"
+console.log(get("sleep").options); //empty_clinei
 ```
 
-### **aliases cli**
+### **Example aliases cli**
 
 ```sh-session
-fake testcmd hi -u Arth -a 18
+fake-cli testcmd hi -u Arth -a 18 -s
 ```
 
 ```js
@@ -186,6 +192,10 @@ console.log(get().aliases);
     alias: "a",
     value: 18
   }
+  {
+    alias: "s",
+    value: undefined
+  }
   ]
  */
 ```
@@ -194,26 +204,28 @@ console.log(get().aliases);
 
 ```js
 console.log(get("u").aliases); //Arth
+//if yot required alias and user not set it, then it will return "empty_clinei"
+console.log(get("s").aliases); //empty_clinei
 ```
 
 > #### **Arguments**
 
-### **arguments(normal) - cli**
+### **Example arguments(normal) - cli**
 
 ```sh-session
-fake testcmd hi
+fake-cli testcmd hi
 ```
 
 ```js
 console.log(get().args); // ["hi"]
 ```
 
-### **arguments(argsminus) - cli**
+### **Example arguments(argsminus) - cli**
 
 ## _NOTE **---** It should be at the end of command line_
 
 ```sh-session
-fake testcmd hi --- args1 args2 args3
+fake-cli testcmd hi --- args1 args2 args3
 ```
 
 ```js
@@ -249,16 +261,20 @@ console.log(get().this); // this command
 bind: true,//(default:false)
 ```
 
+### **`bind is true`**
+
 ```sh-session
-fake testcmd -tcmd
+fake-cli testcmd -tcmd
 ```
 
 ```js
 bind: false,//(default:false)
 ```
 
+### **`bind is false`**
+
 ```sh-session
-fake -tcmd
+fake-cli -tcmd
 ```
 
 > #### **if used type**
@@ -274,7 +290,7 @@ root\clinei\index.js:344
             throw new Error(
                   ^
 
-Error: Invalid value for option password expected String got 123456
+Error: Invalid value for <option or alias> <Name> expected String got 123456
                                                             ^^^^^
 <message when error is thrown>
 
@@ -320,13 +336,22 @@ Error: Missing required <option or alias> <Name>
 
 ### **Run as an Test** `node index.js` **in terminal**
 
+#### CLI Like this
+
+```sh-session
+node index.js -username Arth -password aoq789 --age 99 --save
+```
+
 ### **index.js**
 
+> ### Note: all commands ".js" file will be loaded
+
 ```js
+//just require clinei and use it like this And nothing else
 const { Build, Register } = require("clinei");
 new Build({
   path: `${__dirname}/commands`, //path to commands folder
-  prefix: "fake", //prefix of commands
+  prefix: "fake-cli", //prefix your cli program
 });
 ```
 
@@ -360,7 +385,7 @@ module.exports = Register(
         bind: true,
       },
     ],
-    usage: "-username Arth -password 123456 --age 99 --save",
+    usage: "-username Arth -password aoq789 --age 99 --save",
     options: [
       {
         name: "age",
@@ -378,16 +403,76 @@ module.exports = Register(
     ],
   },
   (get) => {
-    console.log(`Hello ${get("username").aliases}, your password is [${
-      get("password").aliases
-    }] and your age is ${
-      get("age").options
-    } and you want to save your data locally ${
-      get("save").options ? "Yes" : "No"
-    }
-    `);
+    const username = get("username").aliases;
+    const password = get("password").aliases;
+    const age = get("age").options;
+    const save = get("save").options;
+    console.log(
+      `\nUsername: ${username}\nPassword: ${password}\nAge: ${age}\nSave: ${
+        save ? "Yes" : "No"
+      }`
+    );
   }
 );
+```
+
+# **HelpCommand**
+
+### **{Path}/help.js** **`Auto generate`**
+
+### **HelpCli**
+
+```sh-session
+node index.js
+```
+
+```sh-session
+ex: fake-cli <command>
+    fake-cli help            Print all commands with description and usage method
+  Aliases: -h
+```
+
+```sh-session
+node index.js help
+```
+
+```sh-session
+ex: fake-cli help <command>        Print all commands with description and usage method
+Commands:
+
+fake-cli login         Log in and print data in console
+
+  [ALIASES]
+    fake-cli -l        Short For Login
+    fake-cli -username        Your name that you want to print  Config<bind,String,required>
+    fake-cli -password        Your password that you want to print  Config<bind,String,required>
+    fake-cli -f        Your password that you want to print  Config<bind,,>
+
+
+  [OPTIONS]
+    fake-cli -age        Your age  Config<Number,required>
+    fake-cli -save        Save your data locally
+```
+
+```sh-session
+node index.js help login
+```
+
+```sh-session
+ex: fake-cli login -username Arth -password fe35gd --age 99 --save        Log in and print data in console
+
+fake-cli login         Log in and print data in console
+
+  [ALIASES]
+    fake-cli -l        Short For Login
+    fake-cli -username        Your name that you want to print  Config<bind,String,required>
+    fake-cli -password        Your password that you want to print  Config<bind,String,required>
+    fake-cli -f        Your password that you want to print  Config<bind,,>
+
+
+  [OPTIONS]
+    fake-cli -age        Your age  Config<Number,required>
+    fake-cli -save        Save your data locally
 ```
 
 ## Links
@@ -399,7 +484,8 @@ module.exports = Register(
 
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
+# clinei is a CLI program builder
+
 ```
 
 ```
-# clinei

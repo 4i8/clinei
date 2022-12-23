@@ -1,4 +1,6 @@
+const glob = require("glob");
 const fs = require("fs");
+
 /**
  * @description build a command handler for cli apps
  */
@@ -15,6 +17,31 @@ module.exports.Build = class {
     if (!config.path) throw new Error("Path is required");
     if (!config.prefix) throw new Error("Prefix is required");
     config.path.endsWith("/") ? config.path : (config.path += "/");
+    const GlobAwait = new Promise((resolve, reject) => {
+      glob(
+        "**/*.js",
+        {
+          cwd: config.path,
+        },
+        function (er, files) {
+          if (er) throw new Error(er);
+          let found = [];
+          files.map((file) => {
+            const command = require(`${config.path}${file}`);
+            found.push(command.cmd);
+          });
+          if (!found.includes("help")) {
+            fs.writeFileSync(
+              `${config.path}help.js`,
+              fs.readFileSync(`${__dirname}/default/help.js`)
+            );
+            return resolve(files.concat("help.js"));
+          }
+          resolve(files);
+        }
+      );
+    });
+    const GlobFiles = await GlobAwait;
     const Key = "______&____A______";
     const Args = process.argv.slice(2);
     const Cmd = Args[0];
@@ -29,16 +56,18 @@ module.exports.Build = class {
         if (x.includes("--")) {
           let valueGet = Args.join(Key).split(Key);
           valueGet = valueGet[valueGet.indexOf(x) + 1];
-          if (valueGet?.includes("---") || x?.includes("---")) return;
           return {
             option: x.replace("--", ""),
-            value: ["true", "false"].includes(valueGet)
-              ? valueGet === "true"
-                ? true
-                : false
-              : !isNaN(valueGet)
-              ? parseInt(valueGet)
-              : valueGet,
+            value:
+              valueGet?.toString().startsWith("-") || x?.startsWith("---")
+                ? undefined
+                : ["true", "false"].includes(valueGet)
+                ? valueGet === "true"
+                  ? true
+                  : false
+                : !isNaN(valueGet)
+                ? parseInt(valueGet)
+                : valueGet,
           };
         }
       })
@@ -57,16 +86,18 @@ module.exports.Build = class {
         if (GetSignLength(x) > 1) return;
         let valueGet = Args.join(Key).split(Key);
         valueGet = valueGet[valueGet.indexOf(x) + 1];
-        if (valueGet?.includes("---") || x?.includes("---")) return;
         return {
           alias: x.replace("-", ""),
-          value: ["true", "false"].includes(valueGet)
-            ? valueGet === "true"
-              ? true
-              : false
-            : !isNaN(valueGet)
-            ? parseInt(valueGet)
-            : valueGet,
+          value:
+            valueGet?.toString().startsWith("-") || x?.startsWith("---")
+              ? undefined
+              : ["true", "false"].includes(valueGet)
+              ? valueGet === "true"
+                ? true
+                : false
+              : !isNaN(valueGet)
+              ? parseInt(valueGet)
+              : valueGet,
         };
       })
       .filter((x) => x);
@@ -78,29 +109,13 @@ module.exports.Build = class {
       };
     });
     //getCommands
-    var files = fs.readdirSync(config.path);
-    let scan_allArray = [];
-    await files.filter(async (f) => {
-      if (!f.endsWith(".js")) {
-        await fs.readdirSync(config.path + f).filter((out) => {
-          if (!out.endsWith(".js")) return;
-          scan_allArray.push(`${f}${Key}${out}`);
-        });
-      }
-    });
-    let pkg = files
-      .filter((f) => {
-        return f.endsWith(".js");
-      })
-      .concat(scan_allArray);
+
     //check for duplicates
     const duplicates = [];
     const cache = [];
     const ERRDuplicates = [];
-    pkg.map((file) => {
-      const command = require(file.includes(Key)
-        ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-        : `${config.path}${file}`);
+    GlobFiles.map((file) => {
+      const command = require(`${config.path}${file}`);
       command.aliases?.forEach((item) => {
         cache.push(item.name);
       });
@@ -112,24 +127,14 @@ module.exports.Build = class {
       }
     });
     duplicates.forEach((item) => {
-      pkg.forEach((file) => {
-        const command = require(file.includes(Key)
-          ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-          : `${config.path}${file}`);
+      GlobFiles.forEach((file) => {
+        const command = require(`${config.path}${file}`);
         if (command.cmd === item) {
-          ERRDuplicates.push(
-            file.includes(Key)
-              ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-              : `${config.path}${file}`
-          );
+          ERRDuplicates.push(`${config.path}${file}`);
         } else if (
           command.aliases?.find((x) => x.name === item?.replace(/-/g, ""))
         ) {
-          ERRDuplicates.push(
-            file.includes(Key)
-              ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-              : `${config.path}${file}`
-          );
+          ERRDuplicates.push(`${config.path}${file}`);
         }
       });
     });
@@ -144,36 +149,54 @@ module.exports.Build = class {
     }
     let commandFound = [];
     let AllCommands = [];
-    for (var file of pkg) {
-      const command = require(file.includes(Key)
-        ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-        : `${config.path}${file}`);
+    for (var file of GlobFiles) {
+      const command = require(`${config.path}${file}`);
       AllCommands.push(...[command]);
     }
-    for (var file of pkg) {
-      const command = require(file.includes(Key)
-        ? `${config.path}${file.split(Key)[0]}/${file.split(Key)[1]}`
-        : `${config.path}${file}`);
+    for (var file of GlobFiles) {
+      const command = require(`${config.path}${file}`);
       function get(key) {
         return {
           options: !key
             ? options?.filter((x) =>
                 command?.options?.map((x) => x.name).includes(x.option)
               )
+            : !options
+                ?.filter((x) =>
+                  command?.options?.map((x) => x.name).includes(x.option)
+                )
+                ?.find((x) => x.option === key)?.value &&
+              options
+                ?.filter((x) =>
+                  command?.options?.map((x) => x.name).includes(x.option)
+                )
+                ?.find((x) => x.option === key)?.option
+            ? "empty_clinei"
             : options
                 ?.filter((x) =>
                   command?.options?.map((x) => x.name).includes(x.option)
                 )
-                ?.find((x) => x.option === key)?.value,
+                ?.find((x) => x.option === key)?.value || undefined,
           aliases: !key
             ? aliases?.filter((x) =>
                 command?.aliases?.map((x) => x.name).includes(x.alias)
               )
+            : !aliases
+                ?.filter((x) =>
+                  command?.aliases?.map((x) => x.name).includes(x.alias)
+                )
+                ?.find((x) => x.alias === key)?.value &&
+              aliases
+                ?.filter((x) =>
+                  command?.aliases?.map((x) => x.name).includes(x.alias)
+                )
+                ?.find((x) => x.alias === key)?.alias
+            ? "empty_clinei"
             : aliases
                 ?.filter((x) =>
                   command?.aliases?.map((x) => x.name).includes(x.alias)
                 )
-                ?.find((x) => x.alias === key)?.value,
+                ?.find((x) => x.alias === key)?.value || undefined,
           args: !key ? args : args.find((x) => x === key),
           argsminus: args
             .join(" ")

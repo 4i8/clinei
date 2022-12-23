@@ -32,7 +32,7 @@ module.exports = Register(
               cmd?.description ? " ".repeat(8) + cmd?.description : ""
             }${
               cmd?.aliases?.length > 0
-                ? "\n  [ALIASES]=>\n" +
+                ? "\n \n  [ALIASES]\n" +
                   cmd?.aliases
                     ?.map((alias) => {
                       return (
@@ -63,7 +63,7 @@ module.exports = Register(
             }` +
             `  ${
               cmd?.options?.length > 0
-                ? "[OPTIONS]=>\n" +
+                ? "\n \n  [OPTIONS]\n" +
                   cmd?.options
                     ?.map((option) => {
                       return (
@@ -107,7 +107,7 @@ module.exports = Register(
               cmd?.description ? " ".repeat(8) + cmd?.description : ""
             }${
               cmd?.aliases?.length > 0
-                ? "\n  [ALIASES]=>\n" +
+                ? "\n \n  [ALIASES]\n" +
                   cmd?.aliases
                     ?.map((alias) => {
                       return (
@@ -138,7 +138,7 @@ module.exports = Register(
             }` +
             `  ${
               cmd?.options?.length > 0
-                ? "[OPTIONS]=>\n" +
+                ? "\n \n  [OPTIONS]\n" +
                   cmd?.options
                     ?.map((option) => {
                       return (
