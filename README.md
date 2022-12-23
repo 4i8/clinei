@@ -10,11 +10,46 @@
 
 **clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program**
 
-[Start](#start)
-
 [Map](#map)
 
-# **Start**
+- [Types](#types)
+  - [Aliases](#aliases)
+  - [Options](#options)
+  - [RegisterConfig](#registerconfig)
+- [ExplanationRegister](#explanationregister)
+
+  - [getmethod](#getmethod)
+
+    - [get() to get all values for options](#get-to-get-all-values-for-options)
+      - [Example options cli](#example-options-cli)
+    - [get() specific value use key like this Options](#get-specific-value-use-key-like-this-options)
+    - [get() to get all values for aliases](#get-to-get-all-values-for-aliases)
+      - [Example aliases cli](#example-aliases-cli)
+    - [get() specific value use key like this Aliases](#get-specific-value-use-key-like-this-aliases)
+    - [Arguments](#arguments)
+      - [normal](#example-argumentsnormal---cli)
+      - [minus](#example-argumentsargsminus---cli)
+    - [get() Not used much](#get-not-used-much)
+
+    [if used](#if-used)
+
+    - [if used bind](#if-used-bind-supportsonly-aliases)
+      - [bind is true](#bind-is-true)
+      - [bind is false](#bind-is-false)
+    - [if used type](#if-used-type)
+      - [Result](#result--type)
+    - [if used msg](#if-used-msg)
+      - [Result](#result--msg)
+    - [if used required](#if-used-required)
+      - [Result](#result--required)
+
+  [Example](#example)
+
+  - [run](#run-as-an-test-node-indexjs-in-terminal)
+  - [cli like](#cli-like-this)
+  - [Index.js [Build]](#indexjs)
+  - [command [Register]](#commandsadminloginjs)
+  - [HelpCommand](#helpcommand)
 
 ```sh-session
 npm install clinei
@@ -133,7 +168,7 @@ Register(
 
 ## **getmethod**
 
-> #### **get() to get all values for options and aliases**
+> ### **get() to get all values for options**
 
 ### **Example options cli**
 
@@ -161,13 +196,15 @@ console.log(get().options);
 */
 ```
 
-> #### **get() specific value use key like this**
+> #### **get() specific value use key like this Options**
 
 ```js
 console.log(get("username").options); //Arth
 //if yot required option and user not set it, then it will return "empty_clinei"
 console.log(get("sleep").options); //empty_clinei
 ```
+
+> ### **get() to get all values for aliases**
 
 ### **Example aliases cli**
 
@@ -195,7 +232,7 @@ console.log(get().aliases);
  */
 ```
 
-> #### **get() specific value use key like this**
+> #### **get() specific value use key like this Aliases**
 
 ```js
 console.log(get("u").aliases); //Arth
@@ -248,7 +285,7 @@ console.log(get().this); // this command
 */
 ```
 
-# **IFused**
+# **IF Used**
 
 > #### **if used bind, SupportsOnly `Aliases`**
 
@@ -480,7 +517,3 @@ fake-cli login         Log in and print data in console
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 # clinei is a CLI program builder
-
-```
-
-```
