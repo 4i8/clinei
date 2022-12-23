@@ -495,8 +495,8 @@ fake-cli login         Log in and print data in console
 
 
   [OPTIONS]
-    fake-cli -age        Your age  Config<Number,required>
-    fake-cli -save        Save your data locally
+    fake-cli --age        Your age  Config<Number,required>
+    fake-cli --save        Save your data locally
 ```
 
 ```sh-session
