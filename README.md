@@ -8,8 +8,9 @@
 
 # **command-line interface handler**
 
-**clinei is a command line interface handler to facilitate the building of cli cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean application**
-[Installation](#installation)
+**clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program**
+
+[Installation](#start)
 
 [Map](#map)
 
@@ -17,14 +18,12 @@
 
 [Example](#Example)
 
-# **Installation**
+# **Start**
 
 ```sh-session
 npm install clinei
 yarn add clinei
 ```
-
-# **Usage**
 
 ### CommonJS
 
