@@ -60,7 +60,7 @@
   - [command [Register]](#commandsadminloginjs)
   - [HelpCommand](#helpcommand)
 
-## **[Go To How to create a cli package npm]()**
+## **[Go To How to create a cli package npm](https://github.com/arosteam/clinei/tree/main/cli)**
 
 ```sh-session
 npm install clinei

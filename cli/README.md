@@ -1,4 +1,4 @@
-# First CLI with Node.js
+# Your First CLI Program
 
 ## **First steps**
 
