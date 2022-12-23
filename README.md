@@ -60,7 +60,7 @@
   - [command [Register]](#commandsadminloginjs)
   - [HelpCommand](#helpcommand)
 
-## **[Go To How to create a cli package npm with clinei](https://github.com/arosteam/clinei/tree/main/cli)**
+### **[Go To , How to create a cli package npm with clinei](https://github.com/arosteam/clinei/tree/main/cli)**
 
 ```sh-session
 npm install clinei
@@ -393,7 +393,7 @@ node index.js -username Arth -password aoq789 --age 99 --save
 
 ```js
 //just require clinei and use it like this And nothing else
-const { Build, Register } = require("clinei");
+const { Build } = require("clinei");
 new Build({
   path: `${__dirname}/commands`, //path to commands folder
   prefix: "fake-cli", //prefix your cli program

@@ -1,7 +1,7 @@
 {
   "name": "clinei",
   "author": "Arth",
-  "version": "0.0.1-b.1",
+  "version": "0.0.1-1",
   "description": "clinei is a command line interface handler to make it easy to build cli programs",
   "main": "index.js",
   "types": "./types/index.d.ts",

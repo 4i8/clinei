@@ -239,17 +239,13 @@ module.exports.Build = class {
                       .aliases.map((x) => "-" + x.name)
                       .join(", ")}`
                   : ""
+              }\n  ${
+                AllCommands.find((x) => x.cmd === "help").options?.length > 0
+                  ? `Options: ${AllCommands.find((x) => x.cmd === "help")
+                      .options.map((x) => "--" + x.name)
+                      .join(", ")}`
+                  : ""
               }
-                      ${
-                        AllCommands.find((x) => x.cmd === "help").options
-                          ?.length > 0
-                          ? `Options: ${AllCommands.find(
-                              (x) => x.cmd === "help"
-                            )
-                              .options.map((x) => "--" + x.name)
-                              .join(", ")}`
-                          : ""
-                      }
                       `);
             } else
               throw new Error(
@@ -414,15 +410,13 @@ module.exports.Build = class {
                   .aliases.map((x) => "-" + x.name)
                   .join(", ")}`
               : ""
+          }\n  ${
+            AllCommands.find((x) => x.cmd === "help").options?.length > 0
+              ? `Options: ${AllCommands.find((x) => x.cmd === "help")
+                  .options.map((x) => "--" + x.name)
+                  .join(", ")}`
+              : ""
           }
-                    ${
-                      AllCommands.find((x) => x.cmd === "help").options
-                        ?.length > 0
-                        ? `Options: ${AllCommands.find((x) => x.cmd === "help")
-                            .options.map((x) => "--" + x.name)
-                            .join(", ")}`
-                        : ""
-                    }
                     `);
         } else
           throw new Error(
