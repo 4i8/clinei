@@ -91,7 +91,7 @@ name: string;
 // command description (defualt:false - not required)
 description: string;
 //This is the type of alias input (defualt:false - not required)
-type: boolean;
+type: string | number | boolean;
 //This is the message of alias when error is thrown (defualt:false - not required)
 msg: string;
 //(defualt:false - not required)

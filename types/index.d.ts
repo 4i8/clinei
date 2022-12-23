@@ -22,7 +22,7 @@ declare module "clinei" {
     /**
      * @description This is the type of alias input (defualt:false)
      */
-    type: boolean;
+    type: string | number | boolean;
     /**
      * @description This is the message of alias when error is thrown (defualt:false)
      */

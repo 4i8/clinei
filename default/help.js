@@ -1,4 +1,4 @@
-const { Register } = require("../index");
+const { Register } = require("clinei");
 module.exports = Register(
   {
     cmd: "help", // <-- This is the command name like <Prefix> help <command>
@@ -98,7 +98,9 @@ module.exports = Register(
           message
       );
     } else {
-      let message = "\nCommands:\n";
+      let message = `\nCommands: ${
+        !cmdFind && get().args[0] ? "Not Found" : ""
+      }\n`;
       clinei
         .filter((c) => c.cmd !== get().this.cmd)
         .map((cmd) => {
