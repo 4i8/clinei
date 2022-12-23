@@ -10,13 +10,9 @@
 
 **clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program**
 
-[Installation](#start)
+[Start](#start)
 
 [Map](#map)
-
-[Usage](#Usage)
-
-[Example](#Example)
 
 # **Start**
 
@@ -39,9 +35,9 @@ import { Build, Register } from "clinei";
 
 # **Map**
 
-## **RegisterConfigDeep**
-
 ### **Types**
+
+<br>
 
 > #### **Aliases**
 
