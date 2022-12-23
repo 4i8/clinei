@@ -52,4 +52,4 @@ npm install -g cli-test
 cli-test help
 ```
 
-## Enjoy it! your Arth Friend
+## [Arth](https://github.com/4i8) Friend, Enjoy with clinei 😊
