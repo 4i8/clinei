@@ -22,14 +22,19 @@
 
     - [get().options](#get-to-get-all-values-for-options)
 
+      - [get all data](#get-to-get-all-values-for-options)
       - [Example options cli](#example-options-cli)
 
       - [get() specific value use key](#get-specific-value-use-key-like-this-options)
 
     - [get().aliases](#get-to-get-all-values-for-aliases)
+
+      - [get all data](#get-to-get-all-values-for-aliases)
+
       - [Example aliases cli](#example-aliases-cli)
-      
+
       - [get() specific value use key](#get-specific-value-use-key-like-this-aliases)
+
     - [Arguments](#arguments)
       - [normal](#example-argumentsnormal---cli)
       - [minus](#example-argumentsargsminus---cli)
