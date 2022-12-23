@@ -1,7 +1,7 @@
 {
   "name": "clinei",
   "author": "Arth",
-  "version": "0.0.1",
+  "version": "0.0.1-b",
   "description": "clinei is a command line interface handler to make it easy to build cli programs",
   "main": "index.js",
   "types": "./types/index.d.ts",
@@ -43,6 +43,7 @@
   "homepage": "https://github.com/4i8/clinei#readme",
   "license": "Apache-2.0",
   "dependencies": {
+    "clinei": "^0.0.1",
     "glob": "^8.0.3"
   }
 }

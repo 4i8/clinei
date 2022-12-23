@@ -60,6 +60,8 @@
   - [command [Register]](#commandsadminloginjs)
   - [HelpCommand](#helpcommand)
 
+## **[Go To How to create a cli package npm]()**
+
 ```sh-session
 npm install clinei
 yarn add clinei
@@ -297,7 +299,8 @@ console.log(get().this); // this command
 # **IF Used**
 
 > #### **if used bind, SupportsOnly `Aliases`**
-<br>
+>
+> <br>
 
 > ### **`bind is true`**
 
@@ -305,11 +308,12 @@ console.log(get().this); // this command
 bind: true,//(default:false)
 ```
 
-
 ```sh-session
 fake-cli testcmd -tcmd
 ```
+
 > ### **`bind is false`**
+
 ```js
 bind: false,//(default:false)
 ```
