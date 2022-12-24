@@ -20,7 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "clinei": "^0.0.1"
+    "clinei": "^0.0.1-1"
   }
 }
 ```
