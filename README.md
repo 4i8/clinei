@@ -26,6 +26,7 @@
       - [Example options cli](#example-options-cli)
 
       - [get() specific value use key](#get-specific-value-use-key-like-this-options)
+      - [get().exist](#getexist-is-a-method-that-returns-true-or-false)
 
     - [get().aliases](#get-to-get-all-values-for-aliases)
 
@@ -34,6 +35,7 @@
       - [Example aliases cli](#example-aliases-cli)
 
       - [get() specific value use key](#get-specific-value-use-key-like-this-aliases)
+      - [get().exist](#getexist-is-a-method-that-returns-true-or-false-aliases)
 
     - [Arguments](#arguments)
       - [normal](#example-argumentsnormal---cli)
