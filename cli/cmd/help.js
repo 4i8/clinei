@@ -2,7 +2,7 @@ const { Register } = require("clinei");
 module.exports = Register(
   {
     cmd: "help", // <-- This is the command name like <Prefix> help <command>
-    description: "Print all commands with description and usage method", // <-- This is the command description
+    description: "View Commands", // <-- This is the command description
     aliases: [
       {
         name: "h", // <-- This is the alias name like -a
@@ -28,17 +28,17 @@ module.exports = Register(
         .filter((c) => c.cmd === cmdFind.cmd)
         .map((cmd) => {
           message +=
-            `\n${Prefix} ${cmd.cmd} ${
-              cmd?.description ? " ".repeat(8) + cmd?.description : ""
-            }${
+            `\n\x1b[32m${Prefix} ${cmd.cmd}\x1b[0m ${
+              cmd?.description ? " ".repeat(5) + cmd?.description : ""
+            }\n \n  [USAGE]\n     ${cmd.usage}${
               cmd?.aliases?.length > 0
                 ? "\n \n  [ALIASES]\n" +
                   cmd?.aliases
                     ?.map((alias) => {
                       return (
-                        `    ${Prefix} -${alias.name}${
+                        `     -${alias.name}${
                           alias?.description
-                            ? " ".repeat(8) + alias?.description
+                            ? " ".repeat(5) + alias?.description
                             : ""
                         } ${
                           [
@@ -46,14 +46,13 @@ module.exports = Register(
                             alias?.type?.name ? alias?.type?.name : "",
                             alias?.required ? "required" : "",
                           ].filter((a) => a)?.length
-                            ? " Config" +
-                              "<" +
+                            ? " [\033[93m" +
                               [
                                 alias?.bind ? "bind" : "",
                                 alias?.type?.name ? alias?.type?.name : "",
                                 alias?.required ? "required" : "",
-                              ].join(",") +
-                              ">"
+                              ].toString() +
+                              "\x1b[0m]"
                             : ""
                         }` + "\n"
                       );
@@ -67,22 +66,21 @@ module.exports = Register(
                   cmd?.options
                     ?.map((option) => {
                       return (
-                        `    ${Prefix} -${option.name}${
+                        `     --${option.name}${
                           option?.description
-                            ? " ".repeat(8) + option?.description
+                            ? " ".repeat(5) + option?.description
                             : ""
                         } ${
                           [
                             option?.type?.name ? option.type.name : "",
                             option?.required ? "required" : "",
                           ].filter((a) => a)?.length
-                            ? " Config" +
-                              "<" +
+                            ? " [\x1b[93m" +
                               [
                                 option?.type?.name ? option.type.name : "",
                                 option?.required ? "required" : "",
-                              ].join(",") +
-                              ">"
+                              ].toString() +
+                              "\x1b[0m]"
                             : ""
                         }` + "\n"
                       );
@@ -92,30 +90,27 @@ module.exports = Register(
             }`;
         });
       console.log(
-        `ex: ${Prefix} ${cmdFind.cmd} ${cmdFind.usage}` +
-          " ".repeat(8) +
-          cmdFind.description +
+        `ex: ${Prefix} ${cmdFind.cmd} [OPTIONS] [ALIASES]` +
+          " ".repeat(5) +
           message
       );
     } else {
-      let message = `\nCommands: ${
-        !cmdFind && get().args[0] ? "Not Found" : ""
-      }\n`;
+      let message = `${!cmdFind ? "" : "\nCommands:"}\n`;
       clinei
         .filter((c) => c.cmd !== get().this.cmd)
         .map((cmd) => {
           message +=
-            `\n${Prefix} ${cmd.cmd} ${
-              cmd?.description ? " ".repeat(8) + cmd?.description : ""
+            `\n\x1b[32m${Prefix} ${cmd.cmd}\x1b[0m ${
+              cmd?.description ? " ".repeat(5) + cmd?.description : ""
             }${
               cmd?.aliases?.length > 0
                 ? "\n \n  [ALIASES]\n" +
                   cmd?.aliases
                     ?.map((alias) => {
                       return (
-                        `    ${Prefix} -${alias.name}${
+                        `     -${alias.name}${
                           alias?.description
-                            ? " ".repeat(8) + alias?.description
+                            ? " ".repeat(5) + alias?.description
                             : ""
                         } ${
                           [
@@ -123,14 +118,13 @@ module.exports = Register(
                             alias?.type?.name ? alias?.type?.name : "",
                             alias?.required ? "required" : "",
                           ].filter((a) => a)?.length
-                            ? " Config" +
-                              "<" +
+                            ? " [\x1b[93m" +
                               [
                                 alias?.bind ? "bind" : "",
                                 alias?.type?.name ? alias?.type?.name : "",
                                 alias?.required ? "required" : "",
-                              ].join(",") +
-                              ">"
+                              ].toString() +
+                              "\x1b[0m]"
                             : ""
                         }` + "\n"
                       );
@@ -144,22 +138,21 @@ module.exports = Register(
                   cmd?.options
                     ?.map((option) => {
                       return (
-                        `    ${Prefix} -${option.name}${
+                        `     --${option.name}${
                           option?.description
-                            ? " ".repeat(8) + option?.description
+                            ? " ".repeat(5) + option?.description
                             : ""
                         } ${
                           [
                             option?.type?.name ? option.type.name : "",
                             option?.required ? "required" : "",
                           ].filter((a) => a)?.length
-                            ? " Config" +
-                              "<" +
+                            ? " [\x1b[93m" +
                               [
                                 option?.type?.name ? option.type.name : "",
                                 option?.required ? "required" : "",
-                              ].join(",") +
-                              ">"
+                              ].toString() +
+                              "\x1b[0m]"
                             : ""
                         }` + "\n"
                       );
@@ -170,10 +163,17 @@ module.exports = Register(
         });
       console.log(
         `ex: ${Prefix} ${get().this.cmd} ${get().this.usage}` +
-          " ".repeat(8) +
+          " ".repeat(5) +
           get().this.description +
           message
       );
+      if (!cmdFind && get().args[0]) {
+        console.log(
+          `\x1b[31mWarn: \x1b[93m${`["${
+            get().args[0]
+          }"]`}\x1b[0m \x1b[31mnot found, try ${Prefix} help`
+        );
+      }
     }
   }
 );

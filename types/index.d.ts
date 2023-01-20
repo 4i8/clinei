@@ -76,6 +76,7 @@ declare module "clinei" {
     commands: any[];
     prefix: string;
     this: ConfigRegister;
+    exist: boolean;
   }
   /**
    * @description build a cli handler for cli apps

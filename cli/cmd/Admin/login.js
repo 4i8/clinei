@@ -46,7 +46,7 @@ module.exports = Register(
     const username = get("username").aliases;
     const password = get("password").aliases;
     const age = get("age").options;
-    const save = get("save").options;
+    const save = get("save").exist;
     console.log(
       `\nUsername: ${username}\nPassword: ${password}\nAge: ${age}\nSave: ${
         save ? "Yes" : "No"

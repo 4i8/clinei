@@ -8,9 +8,9 @@
 
 # **command-line interface handler**
 
-**clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program**
+**clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program clinei is not a cli package, it is a package that helps you build a cli package**
 
-[Map](#map)
+[Map]
 
 - [Types](#types)
   - [Aliases](#aliases)
@@ -60,8 +60,6 @@
   - [command [Register]](#commandsadminloginjs)
   - [HelpCommand](#helpcommand)
 
-### **[Go To , How to create a cli package npm with clinei](https://github.com/arosteam/clinei/tree/main/cli)**
-
 ```sh-session
 npm install clinei
 yarn add clinei
@@ -79,7 +77,18 @@ const { Build, Register } = require("clinei");
 import { Build, Register } from "clinei";
 ```
 
-# **Map**
+```diff
+- empty_clinei
+
++ get().exist is a method that returns true if the command is used and false if it is not used
+
++ Some Fixes
+
++ some changes in help command
+
++ Give a warning if the command is not found Warn:["<ARGS>"] not found, try fake-cli help
+
+```
 
 ### **Types**
 
@@ -211,8 +220,12 @@ console.log(get().options);
 
 ```js
 console.log(get("username").options); //Arth
-//if yot required option and user not set it, then it will return "empty_clinei"
-console.log(get("sleep").options); //empty_clinei
+```
+
+> #### **get().exist is a method that returns true if the command is used and false if it is not used**
+
+```js
+console.log(get("sleep").exist); //true
 ```
 
 > ### **get() to get all values for aliases**
@@ -247,8 +260,12 @@ console.log(get().aliases);
 
 ```js
 console.log(get("u").aliases); //Arth
-//if yot required alias and user not set it, then it will return "empty_clinei"
-console.log(get("s").aliases); //empty_clinei
+```
+
+> #### **get().exist is a method that returns true if the command is used and false if it is not used**
+
+```js
+console.log(get("s").exist); //true
 ```
 
 > #### **Arguments**
@@ -336,7 +353,7 @@ root\clinei\index.js:344
                   ^
 
 Error: Invalid value for <option or alias> <Name> expected String got 123456
-                                                            ^^^^^
+                                                            ^^^^^^^^^^
 <message when error is thrown>
 
 ```
@@ -355,7 +372,7 @@ root\clinei\index.js:344
                   ^
 
 Error: Invalid value for <option or alias> <Name> expected String got 123456
-                                                            ^^^^^
+                                                            ^^^^^^^^^^
 <message when error is thrown>
 
 ```
@@ -374,7 +391,7 @@ root\clinei\index.js:248
                   ^
 
 Error: Missing required <option or alias> <Name>
-                                ^^^^^
+                                ^^^^^^^^^^
 ```
 
 # **Example**
@@ -384,7 +401,7 @@ Error: Missing required <option or alias> <Name>
 #### CLI Like this
 
 ```sh-session
-node index.js -username Arth -password aoq789 --age 99 --save
+node index.js login -username Arth -password aoq789 --age 99 --save
 ```
 
 ### **index.js**
@@ -451,7 +468,7 @@ module.exports = Register(
     const username = get("username").aliases;
     const password = get("password").aliases;
     const age = get("age").options;
-    const save = get("save").options;
+    const save = get("save").exist;
     console.log(
       `\nUsername: ${username}\nPassword: ${password}\nAge: ${age}\nSave: ${
         save ? "Yes" : "No"
@@ -468,56 +485,59 @@ module.exports = Register(
 ### **HelpCli**
 
 ```sh-session
-node index.js
+fake-cli
 ```
 
 ```sh-session
 ex: fake-cli <command>
-    fake-cli help            Print all commands with description and usage method
+    fake-cli help       View Commands
   Aliases: -h
 ```
 
 ```sh-session
-node index.js help
+fake-cli help
 ```
 
 ```sh-session
-ex: fake-cli help <command>        Print all commands with description and usage method
-Commands:
+ex: fake-cli help <command>     View Commands
 
-fake-cli login         Log in and print data in console
+fake-cli login      Log in and print data in console
 
   [ALIASES]
-    fake-cli -l        Short For Login
-    fake-cli -username        Your name that you want to print  Config<bind,String,required>
-    fake-cli -password        Your password that you want to print  Config<bind,String,required>
-    fake-cli -f        Your password that you want to print  Config<bind,,>
+     -l     Short For Login
+     -username     Your name that you want to print  [bind,String,required]
+     -password     Your password that you want to print  [bind,String,required]
 
 
   [OPTIONS]
-    fake-cli --age        Your age  Config<Number,required>
-    fake-cli --save        Save your data locally
+     --age     Your age  [Number,required]
+     --save     Save your data locally
+
+
 ```
 
 ```sh-session
-node index.js help login
+fake-cli help login
 ```
 
 ```sh-session
-ex: fake-cli login -username Arth -password fe35gd --age 99 --save        Log in and print data in console
+ex: fake-cli login [OPTIONS] [ALIASES]
 
-fake-cli login         Log in and print data in console
+fake-cli login      Log in and print data in console
+
+  [USAGE]
+     -username Arth -password aoq789 --age 99 --save
 
   [ALIASES]
-    fake-cli -l        Short For Login
-    fake-cli -username        Your name that you want to print  Config<bind,String,required>
-    fake-cli -password        Your password that you want to print  Config<bind,String,required>
-    fake-cli -f        Your password that you want to print  Config<bind,,>
+     -l     Short For Login
+     -username     Your name that you want to print  [bind,String,required]
+     -password     Your password that you want to print  [bind,String,required]
 
 
   [OPTIONS]
-    fake-cli -age        Your age  Config<Number,required>
-    fake-cli -save        Save your data locally
+     --age     Your age  [Number,required]
+     --save     Save your data locally
+
 ```
 
 ## Links
@@ -530,3 +550,7 @@ fake-cli login         Log in and print data in console
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 # clinei is a CLI program builder
+
+```
+
+```

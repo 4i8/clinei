@@ -1,6 +1,5 @@
 const glob = require("glob");
 const fs = require("fs");
-
 /**
  * @description build a command handler for cli apps
  */
@@ -171,7 +170,7 @@ module.exports.Build = class {
                   command?.options?.map((x) => x.name).includes(x.option)
                 )
                 ?.find((x) => x.option === key)?.option
-            ? "empty_clinei"
+            ? undefined
             : options
                 ?.filter((x) =>
                   command?.options?.map((x) => x.name).includes(x.option)
@@ -191,12 +190,27 @@ module.exports.Build = class {
                   command?.aliases?.map((x) => x.name).includes(x.alias)
                 )
                 ?.find((x) => x.alias === key)?.alias
-            ? "empty_clinei"
+            ? undefined
             : aliases
                 ?.filter((x) =>
                   command?.aliases?.map((x) => x.name).includes(x.alias)
                 )
                 ?.find((x) => x.alias === key)?.value || undefined,
+          exist: !key
+            ? undefined
+            : options
+                ?.filter((x) =>
+                  command?.options?.map((x) => x.name).includes(x.option)
+                )
+                ?.find((x) => x.option === key)?.option
+            ? true
+            : aliases
+                ?.filter((x) =>
+                  command?.aliases?.map((x) => x.name).includes(x.alias)
+                )
+                ?.find((x) => x.alias === key)?.alias
+            ? true
+            : false,
           args: !key ? args : args.find((x) => x === key),
           argsminus: args
             .join(" ")
@@ -231,7 +245,7 @@ module.exports.Build = class {
             if (AllCommands.find((x) => x.cmd === "help")) {
               console.log(`ex: ${config.prefix} ${
                 AllCommands.find((x) => x.cmd === "help").usage
-              }\n    ${config.prefix} help ${" ".repeat(10)} ${
+              }\n    ${config.prefix} help ${" ".repeat(5)} ${
                 AllCommands.find((x) => x.cmd === "help").description
               }\n  ${
                 AllCommands.find((x) => x.cmd === "help").aliases?.length > 0
@@ -247,6 +261,13 @@ module.exports.Build = class {
                   : ""
               }
                       `);
+              if (!AllCommands.find((x) => x.cmd === Cmd) && Cmd) {
+                console.log(
+                  `\x1b[31mWarn: \x1b[93m${`["${Cmd}"]`}\x1b[0m \x1b[31mnot found, try ${
+                    config.prefix
+                  } help`
+                );
+              }
             } else
               throw new Error(
                 `${
@@ -265,9 +286,11 @@ module.exports.Build = class {
             item?.required
           ) {
             throw new Error(
-              `Missing required option ${item.name}\n` +
-                " ".repeat(`Missing required option ${item.name}`.length + 5) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+              `Missing required alias ${item.name}\n` +
+                " ".repeat(`Missing required alias ${item.name}`.length - 1) +
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           }
         });
@@ -279,8 +302,10 @@ module.exports.Build = class {
           ) {
             throw new Error(
               `Missing required option ${item.name}\n` +
-                " ".repeat(`Missing required option ${item.name}`.length + 5) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                " ".repeat(`Error:  Missing required option`.length) +
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           }
         });
@@ -299,8 +324,10 @@ module.exports.Build = class {
           ) {
             throw new Error(
               `Missing required option ${item.name}\n` +
-                " ".repeat(`Missing required option ${item.name}`.length + 5) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                " ".repeat(`Error:  Missing required option`.length) +
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           } else if (
             item?.type !== false &&
@@ -309,14 +336,18 @@ module.exports.Build = class {
               item?.type.name.toLowerCase()
           ) {
             throw new Error(
-              `Invalid value for option ${item.name} expected ${
+              `Invalid value for option ${item.name} expected \x1b[93m${
                 item.type.name
-              } got ${options.find((x) => x.option === item.name)?.value}\n` +
+              }\x1b[0m got ${
+                options.find((x) => x.option === item.name)?.value
+              }\n` +
                 " ".repeat(
                   `Invalid value for option ${item.name} expected ${item.type.name} got`
                     .length + 7
                 ) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           } else if (
             !options.find((x) => x.option === item.name)?.value &&
@@ -330,14 +361,18 @@ module.exports.Build = class {
             )
           ) {
             throw new Error(
-              `Invalid value for option ${item.name} expected ${
+              `Invalid value for option ${item.name} expected \x1b[93m${
                 item.type.name
-              } got ${options.find((x) => x.option === item.name)?.value}\n` +
+              }\x1b[0m got ${
+                options.find((x) => x.option === item.name)?.value
+              }\n` +
                 " ".repeat(
                   `Invalid value for option ${item.name} expected ${item.type.name} got`
                     .length + 7
                 ) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           }
         });
@@ -350,9 +385,11 @@ module.exports.Build = class {
             item?.required
           ) {
             throw new Error(
-              `Missing required option ${item.name}\n` +
-                " ".repeat(`Missing required option ${item.name}`.length + 5) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+              `Missing required alias ${item.name}\n` +
+                " ".repeat(`Error:  Missing required alias`.length) +
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           } else if (
             item?.type !== false &&
@@ -361,14 +398,18 @@ module.exports.Build = class {
               item?.type.name.toLowerCase()
           ) {
             throw new Error(
-              `Invalid value for option ${item.name} expected ${
+              `Invalid value for alias ${item.name} expected \x1b[93m${
                 item.type.name
-              } got ${aliases.find((x) => x.alias === item.name)?.value}\n` +
+              }\x1b[0m got ${
+                aliases.find((x) => x.alias === item.name)?.value
+              }\n` +
                 " ".repeat(
-                  `Invalid value for option ${item.name} expected ${item.type.name} got`
+                  `Invalid value for alias ${item.name} expected ${item.type.name} got`
                     .length + 7
                 ) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           } else if (
             !aliases.find((x) => x.alias === item.name)?.value &&
@@ -382,14 +423,18 @@ module.exports.Build = class {
             )
           ) {
             throw new Error(
-              `Invalid value for option ${item.name} expected ${
+              `Invalid value for alias ${item.name} expected \x1b[93m${
                 item.type.name
-              } got ${aliases.find((x) => x.alias === item.name)?.value}\n` +
+              }\x1b[0m got ${
+                aliases.find((x) => x.alias === item.name)?.value
+              }\n` +
                 " ".repeat(
-                  `Invalid value for option ${item.name} expected ${item.type.name} got`
+                  `Invalid value for alias ${item.name} expected ${item.type.name} got`
                     .length + 7
                 ) +
-                `^^^^^${item?.msg ? `\n${item.msg}` : ""}`
+                `${"^".repeat(item.name.length)}${
+                  item?.msg ? `\n${item.msg}` : ""
+                }`
             );
           }
         });
@@ -402,7 +447,7 @@ module.exports.Build = class {
         if (AllCommands.find((x) => x.cmd === "help")) {
           console.log(`ex: ${config.prefix} ${
             AllCommands.find((x) => x.cmd === "help").usage
-          }\n    ${config.prefix} help ${" ".repeat(10)} ${
+          }\n    ${config.prefix} help ${" ".repeat(5)} ${
             AllCommands.find((x) => x.cmd === "help").description
           }\n  ${
             AllCommands.find((x) => x.cmd === "help").aliases?.length > 0
@@ -418,6 +463,13 @@ module.exports.Build = class {
               : ""
           }
                     `);
+          if (!AllCommands.find((x) => x.cmd === Cmd) && Cmd) {
+            console.log(
+              `\x1b[31mWarn: \x1b[93m${`["${Cmd}"]`}\x1b[0m \x1b[31mnot found, try ${
+                config.prefix
+              } help`
+            );
+          }
         } else
           throw new Error(
             `${
