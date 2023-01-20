@@ -111,9 +111,9 @@ msg: string;
 required: boolean;
 /*
 if bind is true, then you can use it
- like <Prefix> testcmd -tcmd <command>
-  or <Prefix> testcmd -tcmd
-    if bind is false, then you can use it like <Prefix> -tcmd <command> or <Prefix> testcmd -tcmd (defualt:false - not required)
+ like <Prefix> test -time <command>
+  or <Prefix> test -time
+    if bind is false, then you can use it like <Prefix> -time <command> or <Prefix> test -time (defualt:false - not required)
 */
 bind: boolean;
 ```
@@ -195,7 +195,7 @@ Register(
 ### **Example options cli**
 
 ```sh-session
-fake-cli testcmd hi --username Arth --age 18 --sleep
+fake-cli test hi --username Arth --age 18 --sleep
 ```
 
 ```js
@@ -235,7 +235,7 @@ console.log(get("sleep").exist); //true
 ### **Example aliases cli**
 
 ```sh-session
-fake-cli testcmd hi -u Arth -a 18 -s
+fake-cli test hi -u Arth -a 18 -s
 ```
 
 ```js
@@ -275,7 +275,7 @@ console.log(get("s").exist); //true
 ### **Example arguments(normal) - cli**
 
 ```sh-session
-fake-cli testcmd hi
+fake-cli test hi
 ```
 
 ```js
@@ -287,7 +287,7 @@ console.log(get().args); // ["hi"]
 ## _NOTE **---** It should be at the end of command line_
 
 ```sh-session
-fake-cli testcmd hi --- args1 args2 args3
+fake-cli test hi --- args1 args2 args3
 ```
 
 ```js
@@ -328,7 +328,7 @@ bind: true,//(default:false)
 ```
 
 ```sh-session
-fake-cli testcmd -tcmd
+fake-cli test -time
 ```
 
 > ### **`bind is false`**
@@ -338,7 +338,7 @@ bind: false,//(default:false)
 ```
 
 ```sh-session
-fake-cli -tcmd
+fake-cli -time
 ```
 
 > #### **if used type**
@@ -552,7 +552,3 @@ fake-cli login      Log in and print data in console
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 # clinei is a CLI program builder
-
-```
-
-```
