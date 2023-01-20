@@ -109,12 +109,7 @@ type: string | number | boolean;
 msg: string;
 //(defualt:false - not required)
 required: boolean;
-/*
-if bind is true, then you can use it
- like <Prefix> test -time <command>
-  or <Prefix> test -time
-    if bind is false, then you can use it like <Prefix> -time <command> or <Prefix> test -time (defualt:false - not required)
-*/
+//see below (defualt:false - not required)
 bind: boolean;
 ```
 
