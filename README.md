@@ -10,7 +10,7 @@
 
 **clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program clinei is not a cli package, it is a package that helps you build a cli package**
 
-[Map]
+## **Map**
 
 - [Types](#types)
   - [Aliases](#aliases)
