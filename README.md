@@ -222,7 +222,7 @@ console.log(get().options);
 console.log(get("username").options); //Arth
 ```
 
-> #### **get().exist is a method that returns true if the command is used and false if it is not used**
+> #### **get().exist is a method that returns true or false**
 
 ```js
 console.log(get("sleep").exist); //true
@@ -262,7 +262,7 @@ console.log(get().aliases);
 console.log(get("u").aliases); //Arth
 ```
 
-> #### **get().exist is a method that returns true if the command is used and false if it is not used**
+> #### **get().exist is a method that returns true or false Aliases**
 
 ```js
 console.log(get("s").exist); //true
