@@ -82,7 +82,7 @@
 
 # Installation
 
-### NPM
+## NPM
 
 ```bash
 npm i clinei
@@ -173,11 +173,11 @@ module.exports = Command(
 }
 ```
 
-### cmd
+> ## **cmd**
 
 **cmd is the command that will be executed in the program, it can be a string or an array of strings**
 
-#### no alias
+### no alias
 
 ```bash
 $ real-cli print
@@ -189,7 +189,7 @@ $ real-cli print
 }
 ```
 
-#### with alias
+### with alias
 
 **-p or --print or print**
 
@@ -203,7 +203,7 @@ $ real-cli -p
 }
 ```
 
-### desc
+> ## **desc**
 
 **desc is the description of the command, it is used in the help command**
 
@@ -213,13 +213,13 @@ $ real-cli -p
 }
 ```
 
-### options
+> ## **options**
 
 **the options of the command, required if the command has options**
 
 **see full documentation of [CommandConfigOption](#CommandConfigoption)**
 
-### usage
+> ## **usage**
 
 **usage is the usage of the command, it is used in the help command**
 
@@ -229,7 +229,7 @@ $ real-cli -p
 }
 ```
 
-### <div id="finallycommandconfig"> <strong>Finally</strong></div>
+> ## <div id="finallycommandconfig"> <strong>Finally</strong></div>
 
 ```js
  {
@@ -261,7 +261,7 @@ $ real-cli -p
 
 **ConfigOption is the configuration of the options of the command**
 
-#### default value
+> ## **default value**
 
 ```js
 {
@@ -274,11 +274,11 @@ $ real-cli -p
 }
 ```
 
-### name
+> ## **name**
 
 **name of the option, it can be a string or an array of strings must start with `-` or `--`**
 
-#### **no alias**
+### **no alias**
 
 ```js
 {
@@ -290,7 +290,7 @@ $ real-cli -p
 $ real-cli --username Arth
 ```
 
-#### **with alias**
+### **with alias**
 
 **-u or --username**
 
@@ -304,7 +304,7 @@ $ real-cli --username Arth
 $ real-cli -u Arth
 ```
 
-### desc
+> ## **desc**
 
 **the description of the option, it is used in the help command**
 
@@ -314,7 +314,7 @@ $ real-cli -u Arth
 }
 ```
 
-### type
+> ## **type**
 
 **the type of the option, it is used to validate the option**
 
@@ -350,7 +350,7 @@ Error: Invalid value for option --age expected number got d
 Tip: use  real-cli help print to see command options
 ```
 
-### msg
+> ## **msg**
 
 **will be displayed if the option is not valid**
 
@@ -374,7 +374,7 @@ See the documentation for more information on github
 Tip: use  real-cli help print to see command options
 ```
 
-### required
+> ## **required**
 
 **required is a boolean that indicates if the option is required**
 
@@ -398,6 +398,28 @@ Missing required option --username,-u
 Tip: use  real-cli help print to see command options
 ```
 
+> ## **default**
+
+default is the default value of the option
+
+```js
+  {
+    name: "--age", //no aliases
+    desc: "your real age",
+    type: "number",
+    msg: "See the documentation for more information on github",
+    default: 99
+  }
+```
+
+```bash
+$ real-cli
+```
+
+```js
+getOptions("--age"); // 99
+```
+
 # Methods
 
 ```js
@@ -414,9 +436,9 @@ Command(
 );
 ```
 
-### getOptions()
+> ## **getOptions()**
 
-**getOptions() is a function that returns values of the options passed in the command**
+**returns values of the options passed in the command**
 
 **specify the name of the option to get the value**
 
@@ -432,9 +454,9 @@ getOptions("-u");
 getOptions();
 ```
 
-### getArgs()
+> ## **getArgs()**
 
-**getArgs() is a function that returns the arguments passed in the command**
+**returns the arguments passed in the command**
 
 ```js
 getArgs(); // return array
@@ -465,9 +487,9 @@ $ real-cli print arg1 arg2 arg3
 false; // if the key does not exist
 ```
 
-### parseArgs()
+> ## **parseArgs()**
 
-**parseArgs() is a function that returns the arguments associated with the key passed in the command**
+**returns the arguments associated with the key passed in the command**
 
 ```bash
 -- 1 2 3 4 5
@@ -486,9 +508,9 @@ parseArgs("--");
 [] // if the key does not exist
 ```
 
-### exist()
+> ## **exist()**
 
-**exist() is a function that returns a boolean indicating if the option exists**
+**returns a boolean indicating if the option exists**
 
 ```js
 exist("--username");
@@ -501,9 +523,9 @@ true; // if the option exists
 false; // if the option does not exist
 ```
 
-### getStructure
+> ## **getStructure**
 
-**getStructure() is a function that returns the structure of the commands You can use it to build a custom help instead printHelp()**
+**returns the structure of the commands You can use it to build a custom help instead printHelp()**
 
 ```js
 getStructure; // return object
@@ -533,17 +555,15 @@ getStructure; // return object
 }
 ```
 
-### printHelp
+> ## **printHelp**
 
-**printHelp is a function that prints the help of the commands**
+**printHelp is a property
+that prints the help of the commands**
 
 ```js
 printHelp;
 ```
-
-**see [HelpCommand](#help) and example [here](#example)**
-
-# HelpCommand
+# <div id="help"> <strong>HelpCommand</strong></div>
 
 **HelpCommand is a command that is used to print the help of the commands**
 
@@ -657,9 +677,9 @@ usage:  real-cli help <command>
 Warn: ["delete"] not found
 ```
 
-<div id="esmexamples"> <strong>ECMAScript</strong></div>
+# <div id="esmexamples"> <strong>ECMAScript</strong></div>
 
-##### `index.js`
+#### `index.js`
 
 ```js
 #!/usr/bin/env node
@@ -673,7 +693,7 @@ new Build({
 });
 ```
 
-##### `commands/print.js`
+#### `commands/print.js`
 
 ```js
 import { Command } from "clinei";
@@ -730,7 +750,7 @@ export default Command(
 );
 ```
 
-##### `commands/help.js`
+#### `commands/help.js`
 
 ```js
 import { Command } from "clinei";
@@ -754,9 +774,9 @@ export default Command(
 );
 ```
 
-<div id="cjsexamples"> <strong>CommonJS</strong></div>
+# <div id="cjsexamples"> <strong>CommonJS</strong></div>
 
-##### `index.js`
+#### `index.js`
 
 ```js
 #!/usr/bin/env node
@@ -767,7 +787,7 @@ new Build({
 });
 ```
 
-##### `commands/print.js`
+#### `commands/print.js`
 
 ```js
 const { Command } = require("clinei");
@@ -824,7 +844,7 @@ module.exports = Command(
 );
 ```
 
-##### `commands/help.js`
+#### `commands/help.js`
 
 ```js
 const { Command } = require("clinei");
@@ -850,7 +870,7 @@ module.exports = Command(
 
 ## Make a golbal program
 
-### add this to your `package.json`
+## add this to your `package.json`
 
 ```json
 {
@@ -860,19 +880,19 @@ module.exports = Command(
 }
 ```
 
-### run
+## run
 
 ```bash
 $ npm link
 ```
 
-### now you can use your program
+## now you can use your program
 
 ```bash
 $ real-cli help
 ```
 
-### real-cli is a name used in this example only. You can change it to the name of your program
+## real-cli is a name used in this example only. You can change it to the name of your program
 
 ## Links
 
