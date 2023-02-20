@@ -3,7 +3,6 @@
  <a href="https://www.npmjs.com/package/clinei"><img src="https://img.shields.io/npm/v/clinei.svg?style=for-the-badge" alt="NPM version" /></a>
  <a href="https://www.npmjs.com/package/clinei"><img src="https://img.shields.io/npm/dt/clinei.svg?maxAge=3600&style=for-the-badge" alt="NPM downloads" /></a>
   <a href="https://www.npmjs.com/package/clinei"><img src="https://img.shields.io/npm/l/clinei.svg?maxAge=3600&style=for-the-badge" alt="license" /></a>
-  </p>
   <a href="https://github.com/4i8/clinei/stargazers">
         <img src="https://img.shields.io/github/stars/4i8/clinei?label=Stars&style=for-the-badge">
     </a>
@@ -17,6 +16,7 @@
     <a href="https://github.com/4i8/clinei/issues">
         <img src="https://img.shields.io/github/issues/4i8/clinei?label=Issues&style=for-the-badge">
     </a>
+     </p>
 </div>
 
 # **command-line interface handler**
@@ -25,23 +25,23 @@
 
 ## Support
 
-- [x] **Command**
-- [x] **Option**
-- [x] **Argument**
-- [x] **Help**
-- [x] **Version**
-- [x] **Customization**
-- [x] **Type**
-- [x] **Alias**
-- [x] **Default**
-- [x] **Required**
-- [x] **Description**
-- [x] **Example**
+- ✅ **Command**
+- ✅ **Option**
+- ✅ **Argument**
+- ✅ **Help**
+- ✅ **Version**
+- ✅ **Customization**
+- ✅ **Type**
+- ✅ **Alias**
+- ✅ **Default**
+- ✅ **Required**
+- ✅ **Description**
+- ✅ **Example**
 
 ## Support
 
-- [x] **ECMAScript Modules (ESM)**
-- [x] **CommonJS (CJS)**
+- ✅ **ECMAScript Modules (ESM)**
+- ✅ **CommonJS (CJS)**
 
 ## **Map**
 
