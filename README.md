@@ -4,6 +4,19 @@
  <a href="https://www.npmjs.com/package/clinei"><img src="https://img.shields.io/npm/dt/clinei.svg?maxAge=3600&style=for-the-badge" alt="NPM downloads" /></a>
   <a href="https://www.npmjs.com/package/clinei"><img src="https://img.shields.io/npm/l/clinei.svg?maxAge=3600&style=for-the-badge" alt="license" /></a>
   </p>
+  <a href="https://github.com/4i8/clinei/stargazers">
+        <img src="https://img.shields.io/github/stars/4i8/clinei?label=Stars&style=for-the-badge">
+    </a>
+    <a href="https://github.com/4i8/clinei/releases/latest">
+        <img src="https://img.shields.io/github/v/release/4i8/clinei?label=Latest%20Version&style=for-the-badge">
+    </a>
+    <a href="https://github.com/4i8/clinei/commit/master">
+        <img src="https://img.shields.io/github/last-commit/4i8/clinei?label=Last%20Update&style=for-the-badge">
+    </a>
+    <img src="https://img.shields.io/github/languages/code-size/4i8/clinei?label=Size&style=for-the-badge">
+    <a href="https://github.com/4i8/clinei/issues">
+        <img src="https://img.shields.io/github/issues/4i8/clinei?label=Issues&style=for-the-badge">
+    </a>
 </div>
 
 # **command-line interface handler**
