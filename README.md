@@ -869,7 +869,7 @@ module.exports = Command(
 );
 ```
 
-## Make a golbal program
+## Make a global program
 
 ## add this to your `package.json`
 
