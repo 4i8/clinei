@@ -48,7 +48,7 @@
 - **[Installation](#installation)**
   - [NPM](#npm)
   - [yarn](#yarn)
-- **[Build](#index)**
+- **[Build](#build)**
   - [esm (ECMAScript Modules)](#esmbuild)
   - [cjs (CommonJS)](#cjsbuild)
 - **[Command](#command)**
