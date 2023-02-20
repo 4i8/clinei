@@ -22,7 +22,6 @@
 - [x] **Alias**
 - [x] **Default**
 - [x] **Required**
-- [x] **Multiple**
 - [x] **Description**
 - [x] **Example**
 
