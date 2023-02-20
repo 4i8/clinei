@@ -563,6 +563,7 @@ that prints the help of the commands**
 ```js
 printHelp;
 ```
+
 # <div id="help"> <strong>HelpCommand</strong></div>
 
 **HelpCommand is a command that is used to print the help of the commands**
