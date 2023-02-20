@@ -58,7 +58,7 @@
     - [desc](#desc)
     - [options](#CommandConfigoption)
     - [usage](#usage)
-    - [FinalConfiguration](#FinallyCommandConfig)
+    - [FinalConfiguration](#finallycommandconfig)
   - [CommandConfigOption](#CommandConfigoption)
     - [name](#name)
     - [desc](#desc-1)
@@ -229,7 +229,7 @@ $ real-cli -p
 }
 ```
 
-### <div id="FinallyCommandConfig"> <strong>Finally</strong></div>
+### <div id="finallycommandconfig"> <strong>Finally</strong></div>
 
 ```js
  {
