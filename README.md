@@ -8,538 +8,862 @@
 
 # **command-line interface handler**
 
-**clinei is a command line interface handler to facilitate the building of cli programs with stability and speed and also you can specify the type of entry of each command and customization that helps you write a clean program clinei is not a cli package, it is a package that helps you build a cli package**
+**clinei is handler to facilitate the building of cli programs with stability and also you can specify the type of entry of each command and customization that helps you write a clean program clinei is not a cli package, it is a package that helps you build a cli package**
+
+## Support
+
+- [x] **Command**
+- [x] **Option**
+- [x] **Argument**
+- [x] **Help**
+- [x] **Version**
+- [x] **Customization**
+- [x] **Type**
+- [x] **Alias**
+- [x] **Default**
+- [x] **Required**
+- [x] **Multiple**
+- [x] **Description**
+- [x] **Example**
+
+## Support
+
+- [x] **ECMAScript Modules (ESM)**
+- [x] **CommonJS (CJS)**
 
 ## **Map**
 
-- [Types](#types)
-  - [Aliases](#aliases)
-  - [Options](#options)
-  - [RegisterConfig](#registerconfig)
-- [ExplanationRegister](#explanationregister)
+- **[Installation](#installation)**
+  - [NPM](#npm)
+  - [yarn](#yarn)
+- **[Build](#index)**
+  - [esm (ECMAScript Modules)](#esmbuild)
+  - [cjs (CommonJS)](#cjsbuild)
+- **[Command](#command)**
 
-  - [getmethod](#getmethod)
+  - [CommandConfig](#CommandConfig)
+    - [cmd](#cmd)
+    - [desc](#desc)
+    - [options](#CommandConfigoption)
+    - [usage](#usage)
+    - [FinalConfiguration](#FinallyCommandConfig)
+  - [CommandConfigOption](#CommandConfigoption)
+    - [name](#name)
+    - [desc](#desc-1)
+    - [type](#type)
+    - [msg](#msg)
+    - [required](#required)
+    - [default](#default)
+  - [Methods](#methods)
+    - [getOptions()](#getoptions)
+    - [getArgs()](#getargs)
+    - [parseArgs()](#parseargs)
+    - [exist()](#exist)
+    - [getStructure](#getstructure)
+    - [printHelp](#printhelp)
+  - [HelpCommand](#help) (required)
 
-    - [get().options](#get-to-get-all-values-for-options)
+## **Examples**
 
-      - [get all values](#get-to-get-all-values-for-options)
-      - [Example options cli](#example-options-cli)
+- [ECMAScript](#esmexamples)
+- [CommonJS](#cjsexamples)
 
-      - [get() specific value use key](#get-specific-value-use-key-like-this-options)
-      - [get().exist](#getexist-is-a-method-that-returns-true-or-false)
+# Installation
 
-    - [get().aliases](#get-to-get-all-values-for-aliases)
+### NPM
 
-      - [get all values](#get-to-get-all-values-for-aliases)
+```bash
+npm i clinei
+```
 
-      - [Example aliases cli](#example-aliases-cli)
+## yarn
 
-      - [get() specific value use key](#get-specific-value-use-key-like-this-aliases)
-      - [get().exist](#getexist-is-a-method-that-returns-true-or-false-aliases)
-
-    - [Arguments](#arguments)
-      - [normal](#example-argumentsnormal---cli)
-      - [minus](#example-argumentsargsminus---cli)
-    - [get() Not used much](#get-not-used-much)
-
-    [if used](#if-used)
-
-    - [if used bind](#if-used-bind-supportsonly-aliases)
-      - [bind is true](#bind-is-true)
-      - [bind is false](#bind-is-false)
-    - [if used type](#if-used-type)
-      - [Result](#result--type)
-    - [if used msg](#if-used-msg)
-      - [Result](#result--msg)
-    - [if used required](#if-used-required)
-      - [Result](#result--required)
-
-  [Example](#example)
-
-  - [run](#run-as-an-test-node-indexjs-in-terminal)
-  - [cli like](#cli-like-this)
-  - [Index.js [Build]](#indexjs)
-  - [command [Register]](#commandsadminloginjs)
-  - [HelpCommand](#helpcommand)
-
-```sh-session
-npm install clinei
+```bash
 yarn add clinei
 ```
 
-### CommonJS
+# Build
+
+**Build is a class that is responsible for building the cli program, it is necessary to pass the path of the commands folder and the prefix of the program**
+
+## We use `real-cli` as an example
+
+<div id="esmbuild"> <strong>esm (ECMAScript Modules)</strong></div>
 
 ```js
-const { Build, Register } = require("clinei");
-```
-
-### ES6
-
-```js
-import { Build, Register } from "clinei";
-```
-
-```diff
-- empty_clinei
-
-+ get().exist is a method that returns true if the command is used and false if it is not used
-
-+ Some Fixes
-
-+ some changes in help command
-
-+ Give a warning if the command is not found Warn:["<ARGS>"] not found, try fake-cli help
-
-```
-
-### **Types**
-
-<br>
-
-> #### **Aliases**
-
-```js
-//alias name like -a (required)
-name: string;
-// command description (defualt:false - not required)
-description: string;
-//This is the type of alias input (defualt:false - not required)
-type: string | number | boolean;
-//This is the message of alias when error is thrown (defualt:false - not required)
-msg: string;
-//(defualt:false - not required)
-required: boolean;
-//see below (defualt:false - not required)
-bind: boolean;
-```
-
-> #### **options**
-
-```js
-//option name like --age (required)
-name: string;
-//command description (defualt:false - not required)
-description: string;
-//This is the type of option input (defualt:false - not required)
-type: string | number | boolean;
-//This is the message of option  when error is thrown (defualt:false - not required)
-msg: string;
-//(defualt:false - not required)
-required: boolean;
-```
-
-> ### **RegisterConfig**
-
-```js
-const { Register } = require("clinei");
-Register(
-  {
-    cmd: "",
-    description: "",
-    aliases: [],
-    usage: "",
-    options: [],
-  },
-  (get) => {
-    //...
-  }
-);
-```
-
-### **ExplanationRegister**
-
-```js
-const { Register } = require("clinei");
-Register(
-  {
-    cmd: "", // required
-    description: "",
-    aliases: [
-      //if you want to use aliases you must use this
-      {
-        name: "",
-        description: "",
-        type: YourType, //like this type: Boolean (Boolean,Number,String)
-        msg: "",
-        required: false,
-        bind: false,
-      },
-    ],
-    usage: "", // required
-    options: [
-      //if you want to use options you must use this
-      {
-        name: "",
-        description: "",
-        type: YourType, //like this type: Boolean (Boolean,Number,String)
-        msg: "",
-        required: false,
-      },
-    ],
-  },
-  (get) => {
-    //...
-  }
-);
-```
-
-## **getmethod**
-
-> ### **get() to get all values for options**
-
-### **Example options cli**
-
-```sh-session
-fake-cli test hi --username Arth --age 18 --sleep
-```
-
-```js
-console.log(get().options);
-/*
-[
-  {
-    option: "username",
-    value: "Arth"
-  },
-  {
-    option: "age",
-    value: 18
-  }
-  {
-    option: "sleep",
-    value: undefined
-  }
-]
-*/
-```
-
-> #### **get() specific value use key like this Options**
-
-```js
-console.log(get("username").options); //Arth
-```
-
-> #### **get().exist is a method that returns true or false**
-
-```js
-console.log(get("sleep").exist); //true
-```
-
-> ### **get() to get all values for aliases**
-
-### **Example aliases cli**
-
-```sh-session
-fake-cli test hi -u Arth -a 18 -s
-```
-
-```js
-console.log(get().aliases);
-/*
-[
-  {
-    alias: "u",
-    value: "Arth"
-  },
-  {
-    alias: "a",
-    value: 18
-  }
-  {
-    alias: "s",
-    value: undefined
-  }
-  ]
- */
-```
-
-> #### **get() specific value use key like this Aliases**
-
-```js
-console.log(get("u").aliases); //Arth
-```
-
-> #### **get().exist is a method that returns true or false Aliases**
-
-```js
-console.log(get("s").exist); //true
-```
-
-> #### **Arguments**
-
-### **Example arguments(normal) - cli**
-
-```sh-session
-fake-cli test hi
-```
-
-```js
-console.log(get().args); // ["hi"]
-```
-
-### **Example arguments(argsminus) - cli**
-
-## _NOTE **---** It should be at the end of command line_
-
-```sh-session
-fake-cli test hi --- args1 args2 args3
-```
-
-```js
-console.log(get().argsminus); // ["args1","args2","args3"]
-```
-
-> #### **get() Not used much**
-
-```js
-//get all commands
-console.log(get().commands); // [Object] see ExplanationRegister up for more info
-//get prefix
-console.log(get().prefix); // prefix
-//get this command
-console.log(get().this); // this command
-//we use this when we need to access command information
-/*
-  {
-    cmd: "",
-    description: "",
-    aliases: [],
-    usage: "",
-    options: [],
-  }
-*/
-```
-
-# **IF Used**
-
-> #### **if used bind, SupportsOnly `Aliases`**
->
-> <br>
-
-> ### **`bind is true`**
-
-```js
-bind: true,//(default:false)
-```
-
-```sh-session
-fake-cli test -time
-```
-
-> ### **`bind is false`**
-
-```js
-bind: false,//(default:false)
-```
-
-```sh-session
-fake-cli -time
-```
-
-> #### **if used type**
-
-```js
-type: String, //Boolean,Number,String (default:false)
-```
-
-> #### **Result** > **type**
-
-```js
-root\clinei\index.js:344
-            throw new Error(
-                  ^
-
-Error: Invalid value for <option or alias> <Name> expected String got 123456
-                                                            ^^^^^^^^^^
-<message when error is thrown>
-
-```
-
-> #### **if used msg**
-
-```js
-msg: "<message when error is thrown>",
-```
-
-> #### **Result** > **msg**
-
-```js
-root\clinei\index.js:344
-            throw new Error(
-                  ^
-
-Error: Invalid value for <option or alias> <Name> expected String got 123456
-                                                            ^^^^^^^^^^
-<message when error is thrown>
-
-```
-
-> #### **if used required**
-
-```js
-required: true,//(defualt:false)
-```
-
-> #### **Result** > **required**
-
-```js
-root\clinei\index.js:248
-            throw new Error(
-                  ^
-
-Error: Missing required <option or alias> <Name>
-                                ^^^^^^^^^^
-```
-
-# **Example**
-
-### **Run as an Test** `node index.js` **in terminal**
-
-#### CLI Like this
-
-```sh-session
-node index.js login -username Arth -password aoq789 --age 99 --save
-```
-
-### **index.js**
-
-> ### Note: all commands ".js" file will be loaded
-
-```js
-//just require clinei and use it like this And nothing else
-const { Build } = require("clinei");
+import { Build } from "clinei";
+import path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 new Build({
-  path: `${__dirname}/commands`, //path to commands folder
-  prefix: "fake-cli", //prefix your cli program
+  path: __dirname + "/<commands folder>",
+  prefix: "real-cli", //<prefix>
 });
 ```
 
-### **commands/Admin/login.js**
+<div id="cjsbuild"> <strong>cjs (CommonJS)</strong></div>
 
 ```js
-const { Register } = require("clinei");
-module.exports = Register(
+const { Build } = require("clinei");
+new Build({
+  path: __dirname + "/<commands folder>",
+  prefix: "real-cli", //<prefix>
+});
+```
+
+# Command
+
+`/<commands folder>/**/*.js`
+**Command() a function that registers the command in the program**
+
+<div id="esmcommand"> <strong>esm (ECMAScript Modules)</strong></div>
+
+```js
+import { Command } from "clinei";
+export default Command(
   {
-    cmd: "login",
-    description: "Log in and print data in console",
-    aliases: [
-      {
-        name: "l",
-        description: "Short For Login",
-      },
-      {
-        name: "username",
-        description: "Your name that you want to print",
-        type: String,
-        msg: "Please type it correctly ex:\n-username Arth",
-        required: true,
-        bind: true,
-      },
-      {
-        name: "password",
-        description: "Your password that you want to print",
-        type: String,
-        msg: "Please type it correctly ex:\n-password Arth",
-        required: true,
-        bind: true,
-      },
-    ],
-    usage: "-username Arth -password aoq789 --age 99 --save",
+    cmd: [], // or string
+    desc: "",
+    usage: "",
+    options: [],
+  },
+  ({ <Methods> }) => {
+    // code
+    }
+);
+```
+
+<div id="cjscommand"> <strong>cjs (CommonJS)</strong></div>
+
+```js
+const { Command } = require("clinei");
+module.exports = Command(
+  {
+    cmd: [], // or string
+    desc: "",
+    usage: "",
+    options: [],
+  },
+  ({ <Methods> }) => {
+    // code
+    }
+);
+```
+
+# CommandConfig
+
+```js
+{
+  cmd: [],
+  desc: "",
+  usage: "",
+  options: [...],
+}
+```
+
+### cmd
+
+**cmd is the command that will be executed in the program, it can be a string or an array of strings**
+
+#### no alias
+
+```bash
+$ real-cli print
+```
+
+```js
+{
+  cmd: "print",
+}
+```
+
+#### with alias
+
+**-p or --print or print**
+
+```bash
+$ real-cli -p
+```
+
+```js
+{
+  cmd: ["-p", "--print", "print"],
+}
+```
+
+### desc
+
+**desc is the description of the command, it is used in the help command**
+
+```js
+{
+  desc: "Log in and print data in console",
+}
+```
+
+### options
+
+**the options of the command, required if the command has options**
+
+**see full documentation of [CommandConfigOption](#CommandConfigoption)**
+
+### usage
+
+**usage is the usage of the command, it is used in the help command**
+
+```js
+{
+  usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
+}
+```
+
+### <div id="FinallyCommandConfig"> <strong>Finally</strong></div>
+
+```js
+ {
+    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
+    desc: "Log in and print data in console",
     options: [
       {
-        name: "age",
-        description: "Your age",
-        type: Number,
-        msg: "Please type it correctly ex:\n--age 99",
+        name: ["--username", "-u"], //with aliases
+        desc: "your real name",
         required: true,
       },
       {
-        name: "save",
-        description: "Save your data locally",
-        msg: "Please type it correctly ex:\n--save",
-        required: false,
+        name: "--age", //no aliases
+        desc: "your real age",
+        type: "number",
+        msg: "See the documentation for more information on github",
+        default: 99,
+      },
+      {
+        name: "--store", //no aliases
+        desc: "store your data or no (optional)",
       },
     ],
+    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
+  }
+```
+
+# CommandConfigOption
+
+**ConfigOption is the configuration of the options of the command**
+
+#### default value
+
+```js
+{
+  name: "",// or array
+  desc: "",
+  type: "string",
+  msg: false,
+  required: false,
+  default: undefined
+}
+```
+
+### name
+
+**name of the option, it can be a string or an array of strings must start with `-` or `--`**
+
+#### **no alias**
+
+```js
+{
+  name: "--username",
+}
+```
+
+```bash
+$ real-cli --username Arth
+```
+
+#### **with alias**
+
+**-u or --username**
+
+```js
+{
+  name: ["-u", "--username"],
+}
+```
+
+```bash
+$ real-cli -u Arth
+```
+
+### desc
+
+**the description of the option, it is used in the help command**
+
+```js
+{
+  desc: "your real name",
+}
+```
+
+### type
+
+**the type of the option, it is used to validate the option**
+
+```js
+{
+  type: "string" | "number" | "boolean",
+}
+```
+
+**Type Test**
+
+```js
+{
+  name: "--age", //no aliases
+  desc: "your real age",
+  type: "number",
+  msg: "See the documentation for more information on github",
+  default: 99
+}
+```
+
+**expected number**
+
+```bash
+$ real-cli --age nine
+```
+
+**OutPut in interface**
+
+```bash
+Error: Invalid value for option --age expected number got d
+                                                         ^
+Tip: use  real-cli help print to see command options
+```
+
+### msg
+
+**will be displayed if the option is not valid**
+
+```js
+{
+  msg: "See the documentation for more information on github",
+}
+```
+
+```bash
+$ real-cli --age nine
+```
+
+**OutPut in interface**
+
+```bash
+Error: Invalid value for option --age expected number got nine
+                                                         ^
+See the documentation for more information on github
+
+Tip: use  real-cli help print to see command options
+```
+
+### required
+
+**required is a boolean that indicates if the option is required**
+
+```js
+  {
+    name: ["--username", "-u"], //with   aliases
+    desc: "your real name",
+    required: true,
+  }
+```
+
+```bash
+$ real-cli --age 99
+```
+
+**OutPut in interface**
+
+```bash
+Missing required option --username,-u
+
+Tip: use  real-cli help print to see command options
+```
+
+# Methods
+
+```js
+Command(
+  {
+    cmd: [], // or string
+    desc: "",
+    usage: "",
+    options: [],
   },
-  (get) => {
-    const username = get("username").aliases;
-    const password = get("password").aliases;
-    const age = get("age").options;
-    const save = get("save").exist;
-    console.log(
-      `\nUsername: ${username}\nPassword: ${password}\nAge: ${age}\nSave: ${
-        save ? "Yes" : "No"
-      }`
-    );
+  ({ getOptions, getArgs, parseArgs, exist, getStructure, printHelp }) => {
+    // code
   }
 );
 ```
 
-# **HelpCommand**
+### getOptions()
 
-### **{Path}/help.js** **`Auto generate`**
+**getOptions() is a function that returns values of the options passed in the command**
 
-### **HelpCli**
+**specify the name of the option to get the value**
 
-```sh-session
-fake-cli
+```js
+getOptions("--username");
+// or one of the aliases
+getOptions("-u");
 ```
 
-```sh-session
-ex: fake-cli <command>
-    fake-cli help       View Commands
-  Aliases: -h
+**all options**
+
+```js
+getOptions();
 ```
 
-```sh-session
-fake-cli help
+### getArgs()
+
+**getArgs() is a function that returns the arguments passed in the command**
+
+```js
+getArgs(); // return array
 ```
 
-```sh-session
-ex: fake-cli help <command>     View Commands
+**specify the key to get the arguments**
 
-fake-cli login      Log in and print data in console
+```js
+getArgs("arg1"); // "arg1" || false
+```
 
-  [ALIASES]
-     -l     Short For Login
-     -username     Your name that you want to print  [bind,String,required]
-     -password     Your password that you want to print  [bind,String,required]
+```bash
+$ real-cli print arg1 arg2 arg3
+```
 
+**OutPut**
+**`getArgs();`**
 
-  [OPTIONS]
-     --age     Your age  [Number,required]
-     --save     Save your data locally
+```js
+["arg1", "arg2", "arg3"]; // if the key exists
+[]; // if the key does not exist
+```
+
+**`getArgs("arg1");`**
+
+```js
+"hi"; // if the key exists
+false; // if the key does not exist
+```
+
+### parseArgs()
+
+**parseArgs() is a function that returns the arguments associated with the key passed in the command**
+
+```bash
+-- 1 2 3 4 5
+```
+
+**specify the key to get the arguments -- or any other key or string**
+
+```js
+parseArgs("--");
+```
+
+**OutPut Array**
+
+```js
+[1, 2, 3, 4, 5] // if the key exists
+[] // if the key does not exist
+```
+
+### exist()
+
+**exist() is a function that returns a boolean indicating if the option exists**
+
+```js
+exist("--username");
+```
+
+**OutPut Boolean**
+
+```js
+true; // if the option exists
+false; // if the option does not exist
+```
+
+### getStructure
+
+**getStructure() is a function that returns the structure of the commands You can use it to build a custom help instead printHelp()**
+
+```js
+getStructure; // return object
+```
+
+**OutPut Object**
+
+```js
+{
+  commands: [
+  {
+  "cmd": [], // or string
+  "desc": "",
+  "usage": "",
+  "options": [...]
+  ,...
+  }
+  ];
+  prefix: string;
+  //this is the structure of the command that is being executed
+  this: {
+  "cmd": [], // or string
+  "desc": "",
+  "usage": "",
+  "options": [...]
+  }
+}
+```
+
+### printHelp
+
+**printHelp is a function that prints the help of the commands**
+
+```js
+printHelp;
+```
+
+**see [HelpCommand](#help) and example [here](#example)**
+
+# HelpCommand
+
+**HelpCommand is a command that is used to print the help of the commands**
+
+```js
+Command(
+  {
+    cmd: ["-h", "--help", "help"],
+    desc: "View Commands",
+    usage: "help <command>",
+  },
+  ({ printHelp }) => {
+    console.log(printHelp);
+  }
+);
+```
+
+```bash
+$ real-cli help
+```
+
+**OutPut**
+
+```
+usage:  real-cli help <command>
+
+ real-cli -h, --help, help [options] [aliases]
+                                                  View Commands
+ real-cli print [options] [aliases]
+                                                  Log in and print data in console
+ Options:
+    --username, -u  REQUIRED,STRING
+                                                  your real name
+    --age  NUMBER
+                                                  your real age
+    --store  STRING
+                                                  store your data or no (optional)
 
 
 ```
 
-```sh-session
-fake-cli help login
+```bash
+$ real-cli help print
 ```
 
-```sh-session
-ex: fake-cli login [OPTIONS] [ALIASES]
+**OutPut**
 
-fake-cli login      Log in and print data in console
+```bash
+usage:  real-cli print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6
 
-  [USAGE]
-     -username Arth -password aoq789 --age 99 --save
-
-  [ALIASES]
-     -l     Short For Login
-     -username     Your name that you want to print  [bind,String,required]
-     -password     Your password that you want to print  [bind,String,required]
-
-
-  [OPTIONS]
-     --age     Your age  [Number,required]
-     --save     Save your data locally
+ real-cli print [options] [aliases]
+                                                  Log in and print data in console
+Options:
+    --username, -u  REQUIRED,STRING
+                                                  your real name
+    --age  NUMBER
+                                                  your real age
+    --store  STRING
+                                                  store your data or no (optional)
 
 ```
+
+```js
+Command(
+  {
+    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
+    desc: "View Commands", // <-- This is the command desc
+    usage: "help <command>",
+  },
+  ({ printHelp, getArgs, getStructure }, focus) => {
+    console.log(printHelp);
+    //focus ->> delete
+    if (
+      (getArgs()[0] || focus) &&
+      !getStructure.commands.find(({ cmd }) =>
+        cmd.find((c) => c === focus || c === getArgs()[0])
+      )
+    ) {
+      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
+    }
+  }
+);
+```
+
+```bash
+$ real-cli delete
+           ^^^^^^ ->> focus
+```
+
+```bash
+$ real-cli help delete
+                ^^^^^^ ->> getArgs()[0]
+```
+
+**OutPut**
+
+```bash
+usage:  real-cli help <command>
+
+ real-cli -h, --help, help [options] [aliases]
+                                                  View Commands
+ real-cli print [options] [aliases]
+                                                  Log in and print data in console
+ Options:
+    --username, -u  REQUIRED,STRING
+                                                  your real name
+    --age  NUMBER
+                                                  your real age
+    --store  STRING
+                                                  store your data or no (optional)
+
+Warn: ["delete"] not found
+```
+
+<div id="esmexamples"> <strong>ECMAScript</strong></div>
+
+##### `index.js`
+
+```js
+#!/usr/bin/env node
+import { Build } from "clinei";
+import path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+new Build({
+  path: __dirname + "/commands",
+  prefix: " real-cli",
+});
+```
+
+##### `commands/print.js`
+
+```js
+import { Command } from "clinei";
+export default Command(
+  {
+    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
+    desc: "Log in and print data in console",
+    options: [
+      {
+        name: ["--username", "-u"], //with aliases
+        desc: "your real name",
+        required: true,
+      },
+      {
+        name: "--age", //no aliases
+        desc: "your real age",
+        type: "number",
+        msg: "See the documentation for more information on github",
+        default: 99,
+      },
+      {
+        name: "--store", //no aliases
+        desc: "store your data or no (optional)",
+      },
+    ],
+    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
+  },
+  ({ getOptions, exist, getArgs, parseArgs }) => {
+    const username = getOptions("-username"); // or -u
+    const age = getOptions("--age");
+    const store = exist("--store");
+    const Skills = parseArgs("--skills"); //or any other key like --
+    if (getArgs("pro")) {
+      console.log(
+        `[${getArgs()[0]}] Hi ,${username} Your Data Enjoy!
+      
+  [username] ${username}
+  [age] ${age}
+  [store] ${store ? "yes store my data" : "No!"}
+  [skills] ${Skills.join(", ")}
+`
+      );
+    } else
+      console.log(
+        `[noob] Hi ,${username} Your Data Enjoy!
+    
+[username] ${username}
+[age] ${age}
+[store] ${store ? "yes store my data" : "No!"}
+[skills] ${Skills.join(", ")}
+`
+      );
+  }
+);
+```
+
+##### `commands/help.js`
+
+```js
+import { Command } from "clinei";
+export default Command(
+  {
+    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
+    desc: "View Commands", // <-- This is the command desc
+    usage: "help <command>",
+  },
+  ({ printHelp, getArgs, getStructure }, focus) => {
+    console.log(printHelp);
+    if (
+      (getArgs()[0] || focus) &&
+      !getStructure.commands.find(({ cmd }) =>
+        cmd.find((c) => c === focus || c === getArgs()[0])
+      )
+    ) {
+      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
+    }
+  }
+);
+```
+
+<div id="cjsexamples"> <strong>CommonJS</strong></div>
+
+##### `index.js`
+
+```js
+#!/usr/bin/env node
+const { Build } = require("clinei");
+new Build({
+  path: __dirname + "/commands",
+  prefix: " real-cli",
+});
+```
+
+##### `commands/print.js`
+
+```js
+const { Command } = require("clinei");
+module.exports = Command(
+  {
+    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
+    desc: "Log in and print data in console",
+    options: [
+      {
+        name: ["--username", "-u"], //with aliases
+        desc: "your real name",
+        required: true,
+      },
+      {
+        name: "--age", //no aliases
+        desc: "your real age",
+        type: "number",
+        msg: "See the documentation for more information on github",
+        default: 99,
+      },
+      {
+        name: "--store", //no aliases
+        desc: "store your data or no (optional)",
+      },
+    ],
+    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
+  },
+  ({ getOptions, exist, getArgs, parseArgs }) => {
+    const username = getOptions("-username"); // or -u
+    const age = getOptions("--age");
+    const store = exist("--store");
+    const Skills = parseArgs("--skills"); //or any other key like --
+    if (getArgs("pro")) {
+      console.log(
+        `[${getArgs()[0]}] Hi ,${username} Your Data Enjoy!
+      
+  [username] ${username}
+  [age] ${age}
+  [store] ${store ? "yes store my data" : "No!"}
+  [skills] ${Skills.join(", ")}
+`
+      );
+    } else
+      console.log(
+        `[noob] Hi ,${username} Your Data Enjoy!
+    
+[username] ${username}
+[age] ${age}
+[store] ${store ? "yes store my data" : "No!"}
+[skills] ${Skills.join(", ")}
+`
+      );
+  }
+);
+```
+
+##### `commands/help.js`
+
+```js
+const { Command } = require("clinei");
+module.exports = Command(
+  {
+    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
+    desc: "View Commands", // <-- This is the command desc
+    usage: "help <command>",
+  },
+  ({ printHelp, getArgs, getStructure }, focus) => {
+    console.log(printHelp);
+    if (
+      (getArgs()[0] || focus) &&
+      !getStructure.commands.find(({ cmd }) =>
+        cmd.find((c) => c === focus || c === getArgs()[0])
+      )
+    ) {
+      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
+    }
+  }
+);
+```
+
+## Make a golbal program
+
+### add this to your `package.json`
+
+```json
+{
+  "bin": {
+    "real-cli": "index.js"
+  }
+}
+```
+
+### run
+
+```bash
+$ npm link
+```
+
+### now you can use your program
+
+```bash
+$ real-cli help
+```
+
+### real-cli is a name used in this example only. You can change it to the name of your program
 
 ## Links
 
-- [Twiter](https://twitter.com/onlyarth)
 - [Github](https://github.com/4i8)
 
 ## License

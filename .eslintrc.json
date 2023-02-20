@@ -1,0 +1,27 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true,
+    "commonjs": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "ignorePatterns": ["node_modules", "dist", "test"],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-undef": "off",
+    "no-constant-condition": "off",
+    "no-empty": "off",
+    "no-prototype-builtins": "off",
+    "no-async-promise-executor": "off",
+    "no-case-declarations": "off",
+    "no-useless-escape": "off",
+    "no-irregular-whitespace": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}
