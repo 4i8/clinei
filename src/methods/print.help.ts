@@ -48,7 +48,7 @@ export function printHelp(commands: any[], args: any[], prefix: string) {
         .forEach((c) => {
           msg += `${prefix} ${c.cmd.join(
             ", "
-          )} [options] [aliases]\n${" ".repeat(50)}${c.desc}\n ${
+          )} [options] [aliases]\n${" ".repeat(50)}${c.desc}\n${
             c.options.length > 0
               ? "Options:\n" +
                 c.options

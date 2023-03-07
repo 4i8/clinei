@@ -23,7 +23,7 @@
 
 **clinei is handler to facilitate the building of cli programs with stability and also you can specify the type of entry of each command and customization that helps you write a clean program clinei is not a cli package, it is a package that helps you build a cli package**
 
-## Support
+## Features
 
 - ✅ **Command**
 - ✅ **Option**
@@ -345,7 +345,7 @@ $ real-cli --age nine
 **OutPut in interface**
 
 ```bash
-Error: Invalid value for option --age expected number got d
+Error: Invalid value for option --age expected number got nine
                                                          ^
 Tip: use  real-cli help print to see command options
 ```
