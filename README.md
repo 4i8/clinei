@@ -42,7 +42,7 @@
 
 - ✅ **ECMAScript Modules (ESM)**
 - ✅ **CommonJS (CJS)**
-
+- ❌️ **Deno**
 ## **Map**
 
 - **[Installation](#installation)**
