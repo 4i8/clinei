@@ -869,7 +869,7 @@ module.exports = Command(
 );
 ```
 
-## Make a global program
+## Make a global program local use npm
 
 ## add this to your `package.json`
 
@@ -886,7 +886,11 @@ module.exports = Command(
 ```bash
 $ npm link
 ```
-
+## or publish and install it globally
+### Example with npm
+```bash
+npm install <package> -g
+```
 ## now you can use your program
 
 ```bash
