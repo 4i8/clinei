@@ -1,4 +1,5 @@
 # **clinei**
+
 <div align="center">
 <br>
 <br>
@@ -46,8 +47,10 @@
 - ✅ **ECMAScript Modules (ESM)**
 - ✅ **CommonJS (CJS)**
 - ❌️ **Deno**
+
 ## **Map**
 
+- **[Examples](#examples)**
 - **[Installation](#installation)**
   - [NPM](#npm)
   - [yarn](#yarn)
@@ -77,11 +80,142 @@
     - [getStructure](#getstructure)
     - [printHelp](#printhelp)
   - [HelpCommand](#help) (required)
+  - [Make Cli Global](#globalcli)
 
-## **Examples**
+# <div id="examples"> <strong>Examples</strong></div>
 
-- [ECMAScript](#esmexamples)
-- [CommonJS](#cjsexamples)
+#### `index.js`
+
+```js
+#!/usr/bin/env node
+import { Build } from "clinei";
+import path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+new Build({
+  path: __dirname + "/commands",
+  prefix: " real-cli",
+});
+```
+
+**if You use CommonJS**
+
+```diff
+- import
++ require
+
++ const { Build } = require("clinei");
+- import { Build } from "clinei";
+- import path from "path";
+- import { fileURLToPath } from "url";
+- const __dirname = path.dirname(fileURLToPath(import.meta.url));
++ new Build({
++   path: __dirname + "/commands",
++   prefix: " real-cli",
++ });
+
+and
++ module.exports = Command(...);
+- export default Command(...);
+```
+
+#### `commands/print.js`
+
+```js
+import { Command } from "clinei";
+export default Command(
+  {
+    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
+    desc: "Log in and print data in console",
+    options: [
+      {
+        name: ["--username", "-u"], //with aliases
+        desc: "your real name",
+        required: true,
+      },
+      {
+        name: "--age", //no aliases
+        desc: "your real age",
+        type: "number",
+        msg: "See the documentation for more information on github",
+        default: 99,
+      },
+      {
+        name: "--store", //no aliases
+        desc: "store your data or no (optional)",
+      },
+    ],
+    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
+  },
+  ({ getOptions, exist, getArgs, parseArgs }) => {
+    const username = getOptions("--username"); // or -u
+    const age = getOptions("--age");
+    const store = exist("--store");
+    const Skills = parseArgs("--skills"); //or any other key like --
+    if (getArgs("pro")) {
+      console.log(
+        `[${getArgs()[0]}] Hi ,${username} Your Data Enjoy!
+      
+  [username] ${username}
+  [age] ${age}
+  [store] ${store ? "yes store my data" : "No!"}
+  [skills] ${Skills.join(", ")}
+`
+      );
+    } else
+      console.log(
+        `[noob] Hi ,${username} Your Data Enjoy!
+    
+[username] ${username}
+[age] ${age}
+[store] ${store ? "yes store my data" : "No!"}
+[skills] ${Skills.join(", ")}
+`
+      );
+  }
+);
+```
+
+#### `commands/help.js`
+
+```js
+import { Command } from "clinei";
+export default Command(
+  {
+    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
+    desc: "View Commands", // <-- This is the command desc
+    usage: "help <command>",
+  },
+  ({ printHelp, getArgs, getStructure }, focus) => {
+    console.log(printHelp);
+    if (
+      (getArgs()[0] || focus) &&
+      !getStructure.commands.find(({ cmd }) =>
+        cmd.find((c) => c === focus || c === getArgs()[0])
+      )
+    ) {
+      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
+    }
+  }
+);
+```
+
+**Run**
+
+```bash
+node index.js print -u Arth --age 120 --store
+```
+
+**OutPut**
+
+```bash
+[noob] Hi ,Arth Your Data Enjoy!
+
+[username] Arth
+[age] 120
+[store] yes store my data
+[skills]
+```
 
 # Installation
 
@@ -681,196 +815,7 @@ usage:  real-cli help <command>
 Warn: ["delete"] not found
 ```
 
-# <div id="esmexamples"> <strong>ECMAScript</strong></div>
-
-#### `index.js`
-
-```js
-#!/usr/bin/env node
-import { Build } from "clinei";
-import path from "path";
-import { fileURLToPath } from "url";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-new Build({
-  path: __dirname + "/commands",
-  prefix: " real-cli",
-});
-```
-
-#### `commands/print.js`
-
-```js
-import { Command } from "clinei";
-export default Command(
-  {
-    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
-    desc: "Log in and print data in console",
-    options: [
-      {
-        name: ["--username", "-u"], //with aliases
-        desc: "your real name",
-        required: true,
-      },
-      {
-        name: "--age", //no aliases
-        desc: "your real age",
-        type: "number",
-        msg: "See the documentation for more information on github",
-        default: 99,
-      },
-      {
-        name: "--store", //no aliases
-        desc: "store your data or no (optional)",
-      },
-    ],
-    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
-  },
-  ({ getOptions, exist, getArgs, parseArgs }) => {
-    const username = getOptions("-username"); // or -u
-    const age = getOptions("--age");
-    const store = exist("--store");
-    const Skills = parseArgs("--skills"); //or any other key like --
-    if (getArgs("pro")) {
-      console.log(
-        `[${getArgs()[0]}] Hi ,${username} Your Data Enjoy!
-      
-  [username] ${username}
-  [age] ${age}
-  [store] ${store ? "yes store my data" : "No!"}
-  [skills] ${Skills.join(", ")}
-`
-      );
-    } else
-      console.log(
-        `[noob] Hi ,${username} Your Data Enjoy!
-    
-[username] ${username}
-[age] ${age}
-[store] ${store ? "yes store my data" : "No!"}
-[skills] ${Skills.join(", ")}
-`
-      );
-  }
-);
-```
-
-#### `commands/help.js`
-
-```js
-import { Command } from "clinei";
-export default Command(
-  {
-    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
-    desc: "View Commands", // <-- This is the command desc
-    usage: "help <command>",
-  },
-  ({ printHelp, getArgs, getStructure }, focus) => {
-    console.log(printHelp);
-    if (
-      (getArgs()[0] || focus) &&
-      !getStructure.commands.find(({ cmd }) =>
-        cmd.find((c) => c === focus || c === getArgs()[0])
-      )
-    ) {
-      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
-    }
-  }
-);
-```
-
-# <div id="cjsexamples"> <strong>CommonJS</strong></div>
-
-#### `index.js`
-
-```js
-#!/usr/bin/env node
-const { Build } = require("clinei");
-new Build({
-  path: __dirname + "/commands",
-  prefix: " real-cli",
-});
-```
-
-#### `commands/print.js`
-
-```js
-const { Command } = require("clinei");
-module.exports = Command(
-  {
-    cmd: "print", //or ["print","--print","-p","myprint"] //with aliases for this command
-    desc: "Log in and print data in console",
-    options: [
-      {
-        name: ["--username", "-u"], //with aliases
-        desc: "your real name",
-        required: true,
-      },
-      {
-        name: "--age", //no aliases
-        desc: "your real age",
-        type: "number",
-        msg: "See the documentation for more information on github",
-        default: 99,
-      },
-      {
-        name: "--store", //no aliases
-        desc: "store your data or no (optional)",
-      },
-    ],
-    usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
-  },
-  ({ getOptions, exist, getArgs, parseArgs }) => {
-    const username = getOptions("-username"); // or -u
-    const age = getOptions("--age");
-    const store = exist("--store");
-    const Skills = parseArgs("--skills"); //or any other key like --
-    if (getArgs("pro")) {
-      console.log(
-        `[${getArgs()[0]}] Hi ,${username} Your Data Enjoy!
-      
-  [username] ${username}
-  [age] ${age}
-  [store] ${store ? "yes store my data" : "No!"}
-  [skills] ${Skills.join(", ")}
-`
-      );
-    } else
-      console.log(
-        `[noob] Hi ,${username} Your Data Enjoy!
-    
-[username] ${username}
-[age] ${age}
-[store] ${store ? "yes store my data" : "No!"}
-[skills] ${Skills.join(", ")}
-`
-      );
-  }
-);
-```
-
-#### `commands/help.js`
-
-```js
-const { Command } = require("clinei");
-module.exports = Command(
-  {
-    cmd: ["-h", "--help", "help"], // <-- This is the command name like <Prefix> help <command>
-    desc: "View Commands", // <-- This is the command desc
-    usage: "help <command>",
-  },
-  ({ printHelp, getArgs, getStructure }, focus) => {
-    console.log(printHelp);
-    if (
-      (getArgs()[0] || focus) &&
-      !getStructure.commands.find(({ cmd }) =>
-        cmd.find((c) => c === focus || c === getArgs()[0])
-      )
-    ) {
-      console.log(`Warn: ${`["${getArgs()[0] || focus}"]`} not found`);
-    }
-  }
-);
-```
+## <div id="globalcli"> <strong>Make Cli Global</strong></div>
 
 ## Make a global program local use npm
 
@@ -889,18 +834,20 @@ module.exports = Command(
 ```bash
 $ npm link
 ```
+
 ## or publish and install it globally
+
 ### Example with npm
+
 ```bash
 npm install <package> -g
 ```
+
 ## now you can use your program
 
 ```bash
 $ real-cli help
 ```
-
-## real-cli is a name used in this example only. You can change it to the name of your program
 
 ## Links
 

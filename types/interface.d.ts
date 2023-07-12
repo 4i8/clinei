@@ -45,10 +45,10 @@ export interface CommandConfig {
   usage?: string | boolean;
 }
 export interface Methods {
-  getOptions(): (key?: string) => CommandConfig | string;
-  getArgs(): (key?: string) => string;
-  parseArgs(): (key?: string) => any[];
-  exist(): (key?: string) => boolean | undefined;
+  getOptions(key?: string): (key?: string) => CommandConfig | string;
+  getArgs(key?: string): (key?: string) => string;
+  parseArgs(key?: string): (key?: string) => any[];
+  exist(key?: string): (key?: string) => boolean | undefined;
   getStructure: {
     commands: [CommandConfig];
     prefix: string;

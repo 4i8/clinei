@@ -167,7 +167,7 @@ export class Build {
                 commandobj.options
                   ?.find((item: any) => item.name.find((a: any) => a === key))
                   .name.find((b: any) => b === a.key)
-              )?.value ||
+              )?.value ??
               commandobj.options?.find((item: any) =>
                 item.name.find((a: any) => a === key)
               )?.default
@@ -254,6 +254,8 @@ export class Build {
           }
           //Type
           if (
+            FindLineProcessing?.value !== undefined &&
+            FindLineProcessing?.value &&
             item.type.toLowerCase() !== "string" &&
             FindLineProcessing?.type !== item.type.toLowerCase() &&
             FindLineProcessing !== undefined

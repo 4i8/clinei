@@ -1,7 +1,7 @@
 {
   "name": "clinei",
   "author": "Arth",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "clinei is a command line interface handler to make it easy to build cli programs",
   "types": "./types/index.d.ts",
   "main": "./dist/index.js",
@@ -19,7 +19,7 @@
     "config.json"
   ],
   "scripts": {
-    "test": "node ./test/cjs/index.js & node ./test/mjs/index.js",
+    "test": "npm run build && node ./test/cjs/index.js print -u Arth --age 120 --store",
     "prettier": "prettier --write . & prettier --check .",
     "build": "rm -rf dist & tsup & prettier --write . &  prettier --check . & eslint ./ --fix --format=pretty",
     "prepublishOnly": "npm run build & npm run prettier"

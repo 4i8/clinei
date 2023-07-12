@@ -24,7 +24,7 @@ module.exports = Command(
     usage: "print pro -u Arth --age=101 --store --skills 1 2 3 4 5 6",
   },
   ({ getOptions, exist, getArgs, parseArgs }) => {
-    const username = getOptions("-username"); // or -u
+    const username = getOptions("--username"); // or -u
     const age = getOptions("--age");
     const store = exist("--store");
     const Skills = parseArgs("--skills"); //or any other key like --
